@@ -136,8 +136,9 @@ export default function ChemsingDashboard({ navigation, route }) {
         return;
       }
 
+      // Using string literal to avoid deprecation warning and undefined crash
       let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaType.Images,
+        mediaTypes: 'Images',
         allowsEditing: true,
         aspect: [4, 3],
         quality: 0.8,
@@ -248,6 +249,7 @@ export default function ChemsingDashboard({ navigation, route }) {
       setAppointments(filtered);
     } catch (error) {
       console.log('Error loading appointments:', error);
+      setCustomErrorModal('Failed to load appointments: ' + error.message);
       setAppointments([]);
     }
   };
@@ -467,9 +469,9 @@ export default function ChemsingDashboard({ navigation, route }) {
         return;
       }
 
-      // Using correct method: launchImageLibraryAsync
+      // Using string literal to avoid deprecation warning and undefined crash
       let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaType.Images,
+        mediaTypes: 'Images',
         allowsEditing: true,
         aspect: [1, 1],
         quality: 0.5,

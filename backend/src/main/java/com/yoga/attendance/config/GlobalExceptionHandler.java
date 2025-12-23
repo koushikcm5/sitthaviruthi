@@ -31,7 +31,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGeneral(Exception ex) {
+        ex.printStackTrace(); // Ensure stack trace is printed to server logs
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", "An error occurred. Please try again later."));
+                .body(Map.of("error", "An error occurred: " + ex.getMessage()));
     }
 }

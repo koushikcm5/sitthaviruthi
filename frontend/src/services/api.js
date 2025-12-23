@@ -789,7 +789,7 @@ export const appointmentAPI = {
       return Array.isArray(data) ? data : [];
     } catch (error) {
       console.error('Error fetching user appointments:', error);
-      return [];
+      throw error;
     }
   },
 
