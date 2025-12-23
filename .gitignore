@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Build outputs
+backend/target/
+frontend/android/app/build/
+frontend/android/build/
+frontend/ios/build/
+frontend/.expo/
+*.apk
+*.aab
+*.ipa
+
+# Logs
+*.log
+backend/*.log
+
+# Environment & Secrets
+.env
+.env.local
+.env.production
+backend/.env
+backend/src/main/resources/application-prod.properties
+*.keystore
+*.jks
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Gradle
+frontend/android/.gradle/
+frontend/android/local.properties
+
+# Maven
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd

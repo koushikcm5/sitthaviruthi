@@ -1,0 +1,54 @@
+{
+  "expo": {
+    "name": "Sittha Viruthi Yoga",
+    "slug": "sitthaviruthi-yoga",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1B3B6F"
+    },
+    "jsEngine": "hermes",
+    "userInterfaceStyle": "light",
+    "platforms": [
+      "android",
+      "ios"
+    ],
+    "assetBundlePatterns": [
+      "assets/images/**",
+      "assets/img/**",
+      "assets/fonts/**"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.sitthaviruthi.yoga",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1B3B6F"
+      },
+      "permissions": [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE",
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE"
+      ],
+      "enableProguardInReleaseBuilds": true,
+      "enableShrinkResourcesInReleaseBuilds": true,
+      "enableDangerousExperimentalLeanBuilds": true,
+      "usesCleartextTraffic": true
+    },
+    "scheme": "myapp",
+    "extra": {
+      "eas": {
+        "projectId": "cabc6986-08fa-4b9e-b76c-8456828b6442"
+      }
+    },
+    "plugins": [
+      "expo-video"
+    ]
+  }
+}
