@@ -271,13 +271,13 @@ export default function AdminContentManager({ navigation, route }) {
             setShowLevelModal(true);
           }}
         >
-          <MaterialIcons name="layers" size={18} color="#1B3B6F" />
+          <MaterialIcons name="layers" size={18} color="#063159" />
           <Text style={styles.levelSelectText}>
             {videoForm.level === '1' ? 'Level 1 - NarKarma Viruthi' :
               videoForm.level === '2' ? 'Level 2 - Suya Viruthi' :
                 'Level 3 - Yoga Viruthi'}
           </Text>
-          <MaterialIcons name="arrow-drop-down" size={24} color="#1B3B6F" />
+          <MaterialIcons name="arrow-drop-down" size={24} color="#063159" />
         </TouchableOpacity>
 
         {videoForm.level === '3' && (
@@ -287,11 +287,11 @@ export default function AdminContentManager({ navigation, route }) {
               style={styles.levelSelectBtn}
               onPress={() => setShowPartModal(true)}
             >
-              <MaterialIcons name="filter-1" size={18} color="#1B3B6F" />
+              <MaterialIcons name="filter-1" size={18} color="#063159" />
               <Text style={styles.levelSelectText}>
                 {videoForm.part ? `Part ${videoForm.part}` : 'Select Part'}
               </Text>
-              <MaterialIcons name="arrow-drop-down" size={24} color="#1B3B6F" />
+              <MaterialIcons name="arrow-drop-down" size={24} color="#063159" />
             </TouchableOpacity>
           </>
         )}
@@ -331,7 +331,7 @@ export default function AdminContentManager({ navigation, route }) {
             <Text style={styles.currentVideoName}>{existingVideo.title}</Text>
             <Text style={styles.currentVideoUrl}>{existingVideo.url}</Text>
             <Text style={styles.videoCardDesc}>{existingVideo.description}</Text>
-            {existingVideo.part && <Text style={{ fontSize: 11, color: '#9B59B6', fontWeight: '600', marginTop: 4 }}>Part {existingVideo.part}</Text>}
+            {existingVideo.part && <Text style={{ fontSize: 11, color: '#401604ff', fontFamily: 'WorkSans-Bold', marginTop: 4 }}>Part {existingVideo.part}</Text>}
           </View>
         )}
 
@@ -348,7 +348,7 @@ export default function AdminContentManager({ navigation, route }) {
                   <Text style={styles.videoCardTitle}>{video.title}</Text>
                   <Text style={styles.videoCardDesc}>{video.description}</Text>
                   <Text style={styles.videoCardUrl}>{video.url}</Text>
-                  {video.part && <Text style={{ fontSize: 11, color: '#9B59B6', fontWeight: '600', marginTop: 4 }}>Part {video.part}</Text>}
+                  {video.part && <Text style={{ fontSize: 11, color: '#531f08ff', fontFamily: 'WorkSans-Bold', marginTop: 4 }}>Part {video.part}</Text>}
                 </>
               ) : (
                 <Text style={styles.noVideos}>No video added yet</Text>
@@ -427,7 +427,7 @@ export default function AdminContentManager({ navigation, route }) {
             <TouchableOpacity
               style={styles.deleteTaskBtn}
               onPress={() => deleteHabit(habit.id)}>
-              <Text style={styles.deleteTaskText}>🗑️ Delete</Text>
+              <Text style={styles.deleteTaskText}>Delete</Text>
             </TouchableOpacity>
           </View>
           <TextInput
@@ -469,13 +469,13 @@ export default function AdminContentManager({ navigation, route }) {
         <TouchableOpacity
           style={[styles.workshopTypeBtn, workshopForm.type === 'upcoming' && styles.workshopTypeBtnActive]}
           onPress={() => setWorkshopForm({ ...workshopForm, type: 'upcoming' })}>
-          <MaterialIcons name="event" size={20} color={workshopForm.type === 'upcoming' ? '#FFFFFF' : '#1B3B6F'} />
+          <MaterialIcons name="event" size={20} color={workshopForm.type === 'upcoming' ? '#FFFFFF' : '#063159'} />
           <Text style={[styles.workshopTypeBtnText, workshopForm.type === 'upcoming' && styles.workshopTypeBtnTextActive]}>Upcoming Workshop</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.workshopTypeBtn, workshopForm.type === 'session' && styles.workshopTypeBtnActive]}
           onPress={() => setWorkshopForm({ ...workshopForm, type: 'session' })}>
-          <MaterialIcons name="video-library" size={20} color={workshopForm.type === 'session' ? '#FFFFFF' : '#1B3B6F'} />
+          <MaterialIcons name="video-library" size={20} color={workshopForm.type === 'session' ? '#FFFFFF' : '#063159'} />
           <Text style={[styles.workshopTypeBtnText, workshopForm.type === 'session' && styles.workshopTypeBtnTextActive]}>Session Workshop</Text>
         </TouchableOpacity>
       </View>
@@ -505,23 +505,23 @@ export default function AdminContentManager({ navigation, route }) {
           setShowLevelModal(true);
         }}
       >
-        <MaterialIcons name="layers" size={18} color="#1B3B6F" />
+        <MaterialIcons name="layers" size={18} color="#063159" />
         <Text style={styles.levelSelectText}>
           {workshopForm.level === '1' ? 'Level 1 - NarKarma Viruthi' :
             workshopForm.level === '2' ? 'Level 2 - Suya Viruthi' :
               'Level 3 - Yoga Viruthi'}
         </Text>
-        <MaterialIcons name="arrow-drop-down" size={24} color="#1B3B6F" />
+        <MaterialIcons name="arrow-drop-down" size={24} color="#063159" />
       </TouchableOpacity>
 
       <Text style={styles.fieldLabel}>Start Date & Time:</Text>
       <View style={styles.dateTimeContainer}>
         <TouchableOpacity style={styles.dateTimeBtn} onPress={() => setShowStartDatePicker(true)}>
-          <MaterialIcons name="event" size={18} color="#1B3B6F" style={{ marginRight: 8 }} />
+          <MaterialIcons name="event" size={18} color="#063159" style={{ marginRight: 8 }} />
           <Text style={styles.dateTimeBtnText}>{startDate.toLocaleDateString()}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.dateTimeBtn} onPress={() => setShowStartTimePicker(true)}>
-          <MaterialIcons name="access-time" size={18} color="#1B3B6F" style={{ marginRight: 8 }} />
+          <MaterialIcons name="access-time" size={18} color="#063159" style={{ marginRight: 8 }} />
           <Text style={styles.dateTimeBtnText}>{startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
         </TouchableOpacity>
       </View>
@@ -552,11 +552,11 @@ export default function AdminContentManager({ navigation, route }) {
       <Text style={styles.fieldLabel}>End Date & Time:</Text>
       <View style={styles.dateTimeContainer}>
         <TouchableOpacity style={styles.dateTimeBtn} onPress={() => setShowEndDatePicker(true)}>
-          <MaterialIcons name="event" size={18} color="#1B3B6F" style={{ marginRight: 8 }} />
+          <MaterialIcons name="event" size={18} color="#063159" style={{ marginRight: 8 }} />
           <Text style={styles.dateTimeBtnText}>{endDate.toLocaleDateString()}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.dateTimeBtn} onPress={() => setShowEndTimePicker(true)}>
-          <MaterialIcons name="access-time" size={18} color="#1B3B6F" style={{ marginRight: 8 }} />
+          <MaterialIcons name="access-time" size={18} color="#063159" style={{ marginRight: 8 }} />
           <Text style={styles.dateTimeBtnText}>{endDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
         </TouchableOpacity>
       </View>
@@ -668,7 +668,7 @@ export default function AdminContentManager({ navigation, route }) {
           style={[styles.tab, activeTab === 'videos' && styles.activeTab]}
           onPress={() => setActiveTab('videos')}
         >
-          <MaterialIcons name="play-circle-outline" size={18} color={activeTab === 'videos' ? '#00A8A8' : '#6B7280'} />
+          <MaterialIcons name="play-circle-outline" size={18} color={activeTab === 'videos' ? '#ffb495' : '#6B7280'} />
           <Text style={[styles.tabText, activeTab === 'videos' && styles.activeTabText]}>Videos</Text>
         </TouchableOpacity>
 
@@ -676,7 +676,7 @@ export default function AdminContentManager({ navigation, route }) {
           style={[styles.tab, activeTab === 'manifestation' && styles.activeTab]}
           onPress={() => setActiveTab('manifestation')}
         >
-          <MaterialIcons name="auto-awesome" size={18} color={activeTab === 'manifestation' ? '#00A8A8' : '#6B7280'} />
+          <MaterialIcons name="auto-awesome" size={18} color={activeTab === 'manifestation' ? '#ffb495' : '#6B7280'} />
           <Text style={[styles.tabText, activeTab === 'manifestation' && styles.activeTabText]}>Manifestation</Text>
         </TouchableOpacity>
 
@@ -684,7 +684,7 @@ export default function AdminContentManager({ navigation, route }) {
           style={[styles.tab, activeTab === 'habits' && styles.activeTab]}
           onPress={() => setActiveTab('habits')}
         >
-          <MaterialIcons name="task-alt" size={18} color={activeTab === 'habits' ? '#00A8A8' : '#6B7280'} />
+          <MaterialIcons name="task-alt" size={18} color={activeTab === 'habits' ? '#ffb495' : '#6B7280'} />
           <Text style={[styles.tabText, activeTab === 'habits' && styles.activeTabText]}>Habits</Text>
         </TouchableOpacity>
 
@@ -692,7 +692,7 @@ export default function AdminContentManager({ navigation, route }) {
           style={[styles.tab, activeTab === 'workshops' && styles.activeTab]}
           onPress={() => setActiveTab('workshops')}
         >
-          <MaterialIcons name="event" size={18} color={activeTab === 'workshops' ? '#00A8A8' : '#6B7280'} />
+          <MaterialIcons name="event" size={18} color={activeTab === 'workshops' ? '#ffb495' : '#6B7280'} />
           <Text style={[styles.tabText, activeTab === 'workshops' && styles.activeTabText]}>Workshops</Text>
         </TouchableOpacity>
       </View>
@@ -709,7 +709,7 @@ export default function AdminContentManager({ navigation, route }) {
         <Modal visible={true} transparent animationType="fade">
           <View style={styles.modalOverlay}>
             <View style={styles.successModalContent}>
-              <MaterialIcons name="check-circle" size={56} color="#10B981" style={{ marginBottom: 16 }} />
+              <MaterialIcons name="check-circle" size={56} color="#28a745" style={{ marginBottom: 16 }} />
               <Text style={styles.successTitle}>Success!</Text>
               <Text style={styles.successDesc}>{successModal}</Text>
               <TouchableOpacity style={styles.successBtn} onPress={() => setSuccessModal(null)}>
@@ -725,10 +725,10 @@ export default function AdminContentManager({ navigation, route }) {
         <Modal visible={true} transparent animationType="fade">
           <View style={styles.modalOverlay}>
             <View style={styles.successModalContent}>
-              <MaterialIcons name="error" size={56} color="#EF4444" style={{ marginBottom: 16 }} />
+              <MaterialIcons name="error" size={56} color="#dc3545" style={{ marginBottom: 16 }} />
               <Text style={styles.successTitle}>Error</Text>
               <Text style={styles.successDesc}>{errorModal}</Text>
-              <TouchableOpacity style={[styles.successBtn, { backgroundColor: '#EF4444' }]} onPress={() => setErrorModal(null)}>
+              <TouchableOpacity style={[styles.successBtn, { backgroundColor: '#dc3545' }]} onPress={() => setErrorModal(null)}>
                 <Text style={styles.successBtnText}>Close</Text>
               </TouchableOpacity>
             </View>
@@ -741,14 +741,14 @@ export default function AdminContentManager({ navigation, route }) {
         <Modal visible={true} transparent animationType="fade">
           <View style={styles.modalOverlay}>
             <View style={styles.successModalContent}>
-              <MaterialIcons name="warning" size={56} color="#F59E0B" style={{ marginBottom: 16 }} />
+              <MaterialIcons name="warning" size={56} color="#ffc107" style={{ marginBottom: 16 }} />
               <Text style={styles.successTitle}>Delete Task?</Text>
               <Text style={styles.successDesc}>Are you sure you want to delete this task? This action cannot be undone.</Text>
               <View style={{ flexDirection: 'row', gap: 8, width: '100%' }}>
                 <TouchableOpacity style={[styles.successBtn, { flex: 1, backgroundColor: '#6B7280', paddingVertical: 10, paddingHorizontal: 8 }]} onPress={() => setDeleteModal(null)}>
                   <Text style={[styles.successBtnText, { fontSize: 13 }]}>Cancel</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.successBtn, { flex: 1, backgroundColor: '#EF4444', paddingVertical: 10, paddingHorizontal: 8 }]} onPress={confirmDeleteHabit}>
+                <TouchableOpacity style={[styles.successBtn, { flex: 1, backgroundColor: '#dc3545', paddingVertical: 10, paddingHorizontal: 8 }]} onPress={confirmDeleteHabit}>
                   <Text style={[styles.successBtnText, { fontSize: 13 }]}>Delete</Text>
                 </TouchableOpacity>
               </View>
@@ -762,7 +762,7 @@ export default function AdminContentManager({ navigation, route }) {
         <Modal visible={true} transparent animationType="fade">
           <View style={styles.modalOverlay}>
             <View style={styles.successModalContent}>
-              <MaterialIcons name="layers" size={56} color="#00A8A8" style={{ marginBottom: 16 }} />
+              <MaterialIcons name="layers" size={56} color="#ffb495" style={{ marginBottom: 16 }} />
               <Text style={styles.successTitle}>Select Level</Text>
               <Text style={styles.successDesc}>Choose the program level</Text>
 
@@ -860,7 +860,7 @@ export default function AdminContentManager({ navigation, route }) {
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={[styles.successBtn, { backgroundColor: '#6B7280', marginTop: 8 }]}
+                style={[styles.successBtn, { backgroundColor: '#6B7280',shadowColor:'#2e2e2e', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 6, marginTop: 8 }]}
                 onPress={() => setShowLevelModal(false)}
               >
                 <Text style={styles.successBtnText}>Cancel</Text>
@@ -875,28 +875,28 @@ export default function AdminContentManager({ navigation, route }) {
         <Modal visible={true} transparent animationType="fade">
           <View style={styles.modalOverlay}>
             <View style={styles.successModalContent}>
-              <MaterialIcons name="filter-1" size={56} color="#00A8A8" style={{ marginBottom: 16 }} />
+              <MaterialIcons name="filter-1" size={56} color="#ffb495" style={{ marginBottom: 16 }} />
               <Text style={styles.successTitle}>Select Part</Text>
 
               <View style={{ flexDirection: 'row', gap: 10, width: '100%' }}>
                 <TouchableOpacity
-                  style={[styles.successBtn, { flex: 1, backgroundColor: '#FFFFFF', borderWidth: 2, borderColor: '#00A8A8' }]}
+                  style={[styles.successBtn, { flex: 1, backgroundColor: '#FFFFFF', borderWidth: 2, borderColor: '#ffb495' }]}
                   onPress={() => {
                     setVideoForm({ ...videoForm, part: '1' });
                     setShowPartModal(false);
                   }}
                 >
-                  <Text style={[styles.successBtnText, { color: '#00A8A8' }]}>Part 1</Text>
+                  <Text style={[styles.successBtnText, { color: '#28a745' }]}>Part 1</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={[styles.successBtn, { flex: 1, backgroundColor: '#FFFFFF', borderWidth: 2, borderColor: '#00A8A8' }]}
+                  style={[styles.successBtn, { flex: 1, backgroundColor: '#FFFFFF', borderWidth: 2, borderColor: '#ffb495' }]}
                   onPress={() => {
                     setVideoForm({ ...videoForm, part: '2' });
                     setShowPartModal(false);
                   }}
                 >
-                  <Text style={[styles.successBtnText, { color: '#00A8A8' }]}>Part 2</Text>
+                  <Text style={[styles.successBtnText, { color: '#28a745' }]}>Part 2</Text>
                 </TouchableOpacity>
               </View>
 
@@ -916,93 +916,93 @@ export default function AdminContentManager({ navigation, route }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F5F7FA' },
-  header: { backgroundColor: '#1B3B6F', paddingHorizontal: 16, paddingVertical: 12, paddingTop: 50, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 4 },
-  headerTitle: { fontSize: 18, fontWeight: '800', color: '#FFFFFF', letterSpacing: 0.3, flex: 1, textAlign: 'center' },
+  header: { backgroundColor: '#04223e', paddingHorizontal: 16, paddingVertical: 12, paddingTop: 50, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 4 },
+  headerTitle: { fontSize: 18, fontFamily: 'JosefinSans-Bold', color: '#FFFFFF', letterSpacing: 0.3, flex: 1, textAlign: 'center' },
   backBtn: { width: 36, height: 36, borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.15)', justifyContent: 'center', alignItems: 'center' },
   tabs: { flexDirection: 'row', backgroundColor: '#FFFFFF', borderBottomWidth: 1, borderBottomColor: '#E5E7EB' },
   tab: { flex: 1, paddingVertical: 12, paddingHorizontal: 8, alignItems: 'center', gap: 4 },
-  activeTab: { borderBottomWidth: 3, borderBottomColor: '#00A8A8' },
-  tabText: { fontSize: 10, color: '#6B7280', fontWeight: '600' },
-  activeTabText: { color: '#00A8A8', fontWeight: '800' },
+  activeTab: { borderBottomWidth: 3, borderBottomColor: '#ffb495' },
+  tabText: { fontSize: 10, color: '#6B7280', fontFamily: 'WorkSans-Medium' },
+  activeTabText: { color: '#ffb495', fontFamily: 'WorkSans-Bold' },
   content: { flex: 1 },
   formContainer: { padding: 16 },
-  formTitle: { fontSize: 18, fontWeight: '800', marginBottom: 16, color: '#1B3B6F' },
-  input: { backgroundColor: '#FFFFFF', padding: 12, borderRadius: 10, marginBottom: 12, borderWidth: 1, borderColor: '#E5E7EB', color: '#1B3B6F', fontSize: 14 },
+  formTitle: { fontSize: 18, fontFamily: 'JosefinSans-Bold', marginBottom: 16, color: '#063159' },
+  input: { backgroundColor: '#FFFFFF', padding: 12, borderRadius: 10, marginBottom: 12, borderWidth: 1, borderColor: '#E5E7EB', color: '#2e2e2e', fontSize: 14, fontFamily: 'WorkSans-Regular' },
   textArea: { height: 80, textAlignVertical: 'top' },
-  addBtn: { backgroundColor: '#00A8A8', padding: 16, borderRadius: 12, marginTop: 10, shadowColor: '#00A8A8', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 6 },
-  btnText: { color: '#FFFFFF', textAlign: 'center', fontSize: 16, fontWeight: '800', letterSpacing: 0.5 },
+  addBtn: { backgroundColor: '#28a745', padding: 16, borderRadius: 12, marginTop: 10, shadowColor: '#28a745', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 6 },
+  btnText: { color: '#FFFFFF', textAlign: 'center', fontSize: 16, fontFamily: 'WorkSans-Bold', letterSpacing: 0.5 },
   progressCard: { backgroundColor: '#FFFFFF', padding: 15, borderRadius: 12, marginBottom: 10, borderWidth: 1, borderColor: '#E5E7EB' },
-  progressUser: { fontSize: 16, fontWeight: '700', marginBottom: 10, color: '#1B3B6F' },
+  progressUser: { fontSize: 16, fontFamily: 'WorkSans-Bold', marginBottom: 10, color: '#063159' },
   progressRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 },
-  completed: { color: '#10B981', fontWeight: '700' },
-  pending: { color: '#6B7280' },
-  allComplete: { color: '#00A8A8', fontWeight: '800', textAlign: 'center', marginTop: 10 },
-  fieldLabel: { fontSize: 13, fontWeight: '700', color: '#1B3B6F', marginBottom: 8, marginTop: 8 },
+  completed: { color: '#28a745', fontFamily: 'WorkSans-Bold' },
+  pending: { color: '#6B7280', fontFamily: 'WorkSans-Regular' },
+  allComplete: { color: '#ffb495', fontFamily: 'WorkSans-Bold', textAlign: 'center', marginTop: 10 },
+  fieldLabel: { fontSize: 13, fontFamily: 'WorkSans-Bold', color: '#063159', marginBottom: 8, marginTop: 8 },
   scheduleButtons: { flexDirection: 'row', gap: 12, marginBottom: 15 },
   scheduleBtn: { flex: 1, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: '#E5E7EB', backgroundColor: '#FFFFFF' },
-  scheduleBtnActive: { backgroundColor: '#00A8A8', borderColor: '#00A8A8' },
-  scheduleBtnText: { color: '#1B3B6F', fontSize: 14, fontWeight: '700', textAlign: 'center' },
+  scheduleBtnActive: { backgroundColor: '#ffb495', borderColor: '#ffb495' },
+  scheduleBtnText: { color: '#063159', fontSize: 14, fontFamily: 'WorkSans-Bold', textAlign: 'center' },
   scheduleBtnTextActive: { color: '#FFFFFF' },
   pickerWrapper: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFFFFF', borderRadius: 10, borderWidth: 1, borderColor: '#E5E7EB', marginBottom: 12, paddingLeft: 12 },
   pickerIcon: { marginRight: 8 },
   pickerContainer: { flex: 1, overflow: 'hidden' },
-  picker: { height: 48, color: '#1B3B6F', marginLeft: -8 },
+  picker: { height: 48, color: '#063159', marginLeft: -8, fontFamily: 'WorkSans-Regular' },
   divider: { height: 1, backgroundColor: '#E5E7EB', marginVertical: 20 },
   videosList: { marginTop: 20 },
-  videosListTitle: { fontSize: 18, fontWeight: '700', color: '#1B3B6F', marginBottom: 15 },
-  noVideos: { fontSize: 13, color: '#6B7280', textAlign: 'center', padding: 16 },
+  videosListTitle: { fontSize: 18, fontFamily: 'JosefinSans-Bold', color: '#063159', marginBottom: 15 },
+  noVideos: { fontSize: 13, color: '#6B7280', textAlign: 'center', padding: 16, fontFamily: 'WorkSans-Regular' },
   videoCard: { backgroundColor: '#FFFFFF', padding: 12, borderRadius: 10, marginBottom: 10, borderWidth: 1, borderColor: '#E5E7EB' },
-  videoCardTitle: { fontSize: 14, fontWeight: '700', color: '#1B3B6F', marginBottom: 6 },
-  videoCardDesc: { fontSize: 13, color: '#6B7280', marginBottom: 6 },
-  videoCardUrl: { fontSize: 11, color: '#00A8A8', fontWeight: '600' },
-  infoText: { fontSize: 13, color: '#6B7280', marginBottom: 16, lineHeight: 18 },
-  currentVideoCard: { backgroundColor: '#F5F7FA', padding: 12, borderRadius: 10, marginTop: 16, borderWidth: 2, borderColor: '#00A8A8' },
-  currentVideoTitle: { fontSize: 12, fontWeight: '700', color: '#00A8A8', marginBottom: 6 },
-  currentVideoName: { fontSize: 14, fontWeight: '700', color: '#1B3B6F', marginBottom: 4 },
-  currentVideoUrl: { fontSize: 11, color: '#6B7280', marginBottom: 6 },
-  currentVideoDate: { fontSize: 10, color: '#999', fontStyle: 'italic' },
+  videoCardTitle: { fontSize: 14, fontFamily: 'WorkSans-Bold', color: '#063159', marginBottom: 6 },
+  videoCardDesc: { fontSize: 13, color: '#6B7280', marginBottom: 6, fontFamily: 'WorkSans-Regular' },
+  videoCardUrl: { fontSize: 11, color: '#6c757d', fontFamily: 'WorkSans-Medium' },
+  infoText: { fontSize: 13, color: '#6B7280', marginBottom: 16, lineHeight: 18, fontFamily: 'WorkSans-Regular' },
+  currentVideoCard: { backgroundColor: '#F5F7FA', padding: 12, borderRadius: 10, marginTop: 16, borderWidth: 2, borderColor: '#ffb495' },
+  currentVideoTitle: { fontSize: 12, fontFamily: 'WorkSans-Bold', color: '#2e2e2e', marginBottom: 6 },
+  currentVideoName: { fontSize: 14, fontFamily: 'WorkSans-Bold', color: '#063159', marginBottom: 4 },
+  currentVideoUrl: { fontSize: 11, color: '#6B7280', marginBottom: 6, fontFamily: 'WorkSans-Regular' },
+  currentVideoDate: { fontSize: 10, color: '#999', fontStyle: 'italic', fontFamily: 'WorkSans-Regular' },
   levelButtons: { flexDirection: 'row', gap: 12, marginBottom: 20 },
   levelBtn: { flex: 1, padding: 12, borderRadius: 12, borderWidth: 2, borderColor: '#E5E7EB', backgroundColor: '#FFFFFF', alignItems: 'center' },
-  levelBtnActive: { backgroundColor: '#00A8A8', borderColor: '#00A8A8' },
-  levelBtnText: { fontSize: 14, fontWeight: '700', color: '#1B3B6F' },
-  levelBtnSubtext: { fontSize: 10, color: '#6B7280', marginTop: 2 },
+  levelBtnActive: { backgroundColor: '#ffb495', borderColor: '#ffb495' },
+  levelBtnText: { fontSize: 14, fontFamily: 'WorkSans-Bold', color: '#063159' },
+  levelBtnSubtext: { fontSize: 10, color: '#6B7280', marginTop: 2, fontFamily: 'WorkSans-Regular' },
   levelBtnTextActive: { color: '#FFFFFF' },
-  levelBadgeInCard: { fontSize: 11, fontWeight: '700', color: '#00A8A8', marginBottom: 6 },
+  levelBadgeInCard: { fontSize: 11, fontFamily: 'WorkSans-Bold', color: '#ffb495', marginBottom: 6 },
   dateTimeContainer: { flexDirection: 'row', gap: 10, marginBottom: 12 },
   dateTimeBtn: { flex: 1, backgroundColor: '#F5F7FA', padding: 12, borderRadius: 10, borderWidth: 1, borderColor: '#E5E7EB', alignItems: 'center', flexDirection: 'row', justifyContent: 'center' },
-  dateTimeBtnText: { fontSize: 12, fontWeight: '600', color: '#1B3B6F' },
-  selectedDateTime: { fontSize: 11, color: '#00A8A8', fontWeight: '600', marginBottom: 12, textAlign: 'center', backgroundColor: '#F5F7FA', padding: 8, borderRadius: 6 },
+  dateTimeBtnText: { fontSize: 12, fontFamily: 'WorkSans-Medium', color: '#063159' },
+  selectedDateTime: { fontSize: 11, color: '#ffb495', fontFamily: 'WorkSans-Bold', marginBottom: 12, textAlign: 'center', backgroundColor: '#F5F7FA', padding: 8, borderRadius: 6 },
   simpleTaskCard: { backgroundColor: '#FFFFFF', borderRadius: 10, padding: 12, marginBottom: 12, borderWidth: 1, borderColor: '#E5E7EB' },
   taskHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
-  taskLabel: { fontSize: 14, fontWeight: '700', color: '#00A8A8' },
+  taskLabel: { fontSize: 14, fontFamily: 'WorkSans-Bold', color: '#063159' },
   deleteTaskBtn: { backgroundColor: '#FEE2E2', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 6 },
-  deleteTaskText: { color: '#DC2626', fontSize: 11, fontWeight: '700' },
-  addNewTaskBtn: { backgroundColor: '#00A8A8', paddingVertical: 12, paddingHorizontal: 16, borderRadius: 10, marginTop: 8, marginBottom: 8, shadowColor: '#00A8A8', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 3 },
-  updateAllBtn: { backgroundColor: '#10B981', paddingVertical: 14, paddingHorizontal: 16, borderRadius: 10, marginTop: 8, shadowColor: '#10B981', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 3 },
+  deleteTaskText: { color: '#dc3545', fontSize: 11, fontFamily: 'WorkSans-Bold' },
+  addNewTaskBtn: { backgroundColor: '#123f70ff', paddingVertical: 12, paddingHorizontal: 16, borderRadius: 10, marginTop: 8, marginBottom: 8, shadowColor: '#ffb495', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 3 },
+  updateAllBtn: { backgroundColor: '#28a745', paddingVertical: 14, paddingHorizontal: 16, borderRadius: 10, marginTop: 8, shadowColor: '#28a745', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 3 },
   noTasksContainer: { backgroundColor: '#F5F7FA', padding: 20, borderRadius: 10, alignItems: 'center', marginBottom: 16 },
-  noTasksText: { fontSize: 13, color: '#6B7280', textAlign: 'center', marginBottom: 16, lineHeight: 18 },
+  noTasksText: { fontSize: 13, color: '#6B7280', textAlign: 'center', marginBottom: 16, lineHeight: 18, fontFamily: 'WorkSans-Regular' },
   levelBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12 },
   workshopTypeContainer: { flexDirection: 'row', gap: 10, marginBottom: 16 },
   workshopTypeBtn: { flex: 1, padding: 10, borderRadius: 10, borderWidth: 2, borderColor: '#E5E7EB', backgroundColor: '#FFFFFF', alignItems: 'center', flexDirection: 'row', justifyContent: 'center', gap: 6 },
-  workshopTypeBtnActive: { backgroundColor: '#00A8A8', borderColor: '#00A8A8' },
-  workshopTypeBtnText: { fontSize: 11, fontWeight: '700', color: '#1B3B6F' },
+  workshopTypeBtnActive: { backgroundColor: '#ffb495', borderColor: '#ffb495' },
+  workshopTypeBtnText: { fontSize: 11, fontFamily: 'WorkSans-Bold', color: '#063159' },
   workshopTypeBtnTextActive: { color: '#FFFFFF' },
   infoBox: { backgroundColor: '#EFF6FF', padding: 12, borderRadius: 10, marginTop: 16, borderLeftWidth: 3, borderLeftColor: '#3B82F6', flexDirection: 'row', alignItems: 'flex-start' },
-  infoBoxTitle: { fontSize: 12, fontWeight: '800', color: '#1B3B6F', marginBottom: 6 },
-  infoBoxText: { fontSize: 11, color: '#6B7280', marginBottom: 3, lineHeight: 16 },
+  infoBoxTitle: { fontSize: 12, fontFamily: 'WorkSans-Bold', color: '#063159', marginBottom: 6 },
+  infoBoxText: { fontSize: 11, color: '#6B7280', marginBottom: 3, lineHeight: 16, fontFamily: 'WorkSans-Regular' },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.7)', justifyContent: 'center', alignItems: 'center', padding: 20 },
   successModalContent: { backgroundColor: '#FFFFFF', borderRadius: 16, padding: 24, alignItems: 'center', width: '85%', maxWidth: 360, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.2, shadowRadius: 12, elevation: 8 },
   successIconCircle: { marginBottom: 16 },
-  successTitle: { fontSize: 20, fontWeight: '800', color: '#1B3B6F', marginBottom: 10, textAlign: 'center' },
-  successDesc: { fontSize: 14, color: '#6B7280', textAlign: 'center', marginBottom: 20, lineHeight: 20 },
-  successBtn: { backgroundColor: '#00A8A8', paddingVertical: 12, paddingHorizontal: 32, borderRadius: 10, width: '100%', shadowColor: '#00A8A8', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 3 },
-  successBtnText: { color: '#FFFFFF', fontSize: 15, fontWeight: '800', textAlign: 'center', letterSpacing: 0.3 },
+  successTitle: { fontSize: 20, fontFamily: 'JosefinSans-Bold', color: '#063159', marginBottom: 10, textAlign: 'center' },
+  successDesc: { fontSize: 14, color: '#6B7280', textAlign: 'center', marginBottom: 20, lineHeight: 20, fontFamily: 'WorkSans-Regular' },
+  successBtn: { backgroundColor: '#28a745', paddingVertical: 12, paddingHorizontal: 32, borderRadius: 10, width: '100%', shadowColor: '#28a745', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 3 },
+  successBtnText: { color: '#FFFFFF', fontSize: 15, fontFamily: 'WorkSans-Bold', textAlign: 'center', letterSpacing: 0.3 },
   levelSelectBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFFFFF', padding: 14, borderRadius: 10, borderWidth: 1, borderColor: '#E5E7EB', marginBottom: 12, gap: 10 },
-  levelSelectText: { flex: 1, fontSize: 14, fontWeight: '600', color: '#1B3B6F' },
-  levelOptionBtn: { width: '100%', backgroundColor: '#F5F7FA', padding: 16, borderRadius: 12, marginBottom: 10, borderWidth: 2, borderColor: '#00A8A8' },
+  levelSelectText: { flex: 1, fontSize: 14, fontFamily: 'WorkSans-Medium', color: '#063159' },
+  levelOptionBtn: { width: '100%', backgroundColor: '#F5F7FA', padding: 16, borderRadius: 12, marginBottom: 10, borderWidth: 2, borderColor: '#ffb495' },
   levelOptionContent: { flexDirection: 'row', alignItems: 'center', gap: 16 },
-  levelOptionNumber: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#00A8A8', color: '#FFFFFF', fontSize: 20, fontWeight: '800', textAlign: 'center', lineHeight: 40 },
+  levelOptionNumber: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#ffb495', color: '#FFFFFF', fontSize: 20, fontFamily: 'JosefinSans-Bold', textAlign: 'center', lineHeight: 40 },
   levelOptionTextContainer: { flex: 1 },
-  levelOptionTitle: { fontSize: 16, fontWeight: '800', color: '#1B3B6F', marginBottom: 2 },
-  levelOptionSubtitle: { fontSize: 12, color: '#6B7280' }
+  levelOptionTitle: { fontSize: 16, fontFamily: 'JosefinSans-Bold', color: '#063159', marginBottom: 2 },
+  levelOptionSubtitle: { fontSize: 12, color: '#6B7280', fontFamily: 'WorkSans-Regular' }
 });

@@ -95,12 +95,12 @@ export default function NotificationsScreen({ navigation }) {
 
   const getIconColor = (type) => {
     switch (type) {
-      case 'SUCCESS': return '#10B981';
+      case 'SUCCESS': return '#10b92fff';
       case 'WARNING': return '#F59E0B';
       case 'INFO': return '#3B82F6';
-      case 'REMINDER': return '#8B5CF6';
+      case 'REMINDER': return '#ffb495';
       case 'LEVEL_UP': return '#F59E0B';
-      default: return '#00A8A8';
+      default: return '#ffb495';
     }
   };
 
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
   },
   backBtn: { padding: 8 },
   headerTitle: { fontSize: 20, color: '#1B3B6F', flex: 1, textAlign: 'center', fontFamily: bodyRegular },
-  markAllText: { fontSize: 14, color: '#00A8A8', fontFamily: bodyRegular },
+  markAllText: { fontSize: 14, color: '#66483c', fontFamily: bodyRegular },
   notificationCard: {
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
   unreadCard: {
     backgroundColor: '#F0F9FF',
     borderLeftWidth: 4,
-    borderLeftColor: '#00A8A8'
+    borderLeftColor: '#b37e68'
   },
   iconCircle: {
     width: 48,
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#00A8A8'
+    backgroundColor: '#063159'
   },
   emptyState: {
     alignItems: 'center',
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3F4F6'
   },
   activeFilterTab: {
-    backgroundColor: '#00A8A8'
+    backgroundColor: '#063159'
   },
   filterTabText: {
     fontSize: 12,
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     paddingHorizontal: 24,
     paddingVertical: 12,
-    backgroundColor: '#00A8A8',
+    backgroundColor: '#ffb495',
     borderRadius: 8
   },
   retryText: {

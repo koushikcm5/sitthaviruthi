@@ -55,7 +55,7 @@ export default function AdminNotificationsScreen({ navigation }) {
       style={[styles.notificationCard, !item.read && styles.unreadCard]}
       onPress={() => handleNotificationPress(item)}>
       <View style={styles.iconCircle}>
-        <MaterialIcons name={getIcon(item.type)} size={24} color="#00A8A8" />
+        <MaterialIcons name={getIcon(item.type)} size={24} color="#ffb495" />
       </View>
       <View style={styles.notificationContent}>
         <Text style={styles.notificationTitle}>{item.title}</Text>
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   backBtn: { padding: 8 },
   headerTitle: { fontSize: 20, fontWeight: '800', color: '#1B3B6F', flex: 1, textAlign: 'center' },
-  markAllText: { fontSize: 14, color: '#00A8A8', fontWeight: '600' },
+  markAllText: { fontSize: 14, color: '#ffb495',fontFamily: 'WorkSans-Medium' },
   notificationCard: {
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
@@ -137,20 +137,21 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#E0F7F7',
+    backgroundColor: '#ffe1d5',
     justifyContent: 'center',
     alignItems: 'center'
   },
   notificationContent: { flex: 1 },
   notificationTitle: { 
     fontSize: 16, 
-    fontWeight: '700', 
+    fontFamily: 'WorkSans-Medium',
     color: '#1B3B6F', 
     marginBottom: 4 
   },
   notificationMessage: { 
-    fontSize: 14, 
+    fontSize: 12, 
     color: '#6B7280', 
+    fontFamily: 'WorkSans-Medium',
     marginBottom: 4,
     lineHeight: 20
   },
@@ -159,7 +160,8 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#00A8A8'
+    fontFamily: 'WorkSans-Medium',
+    backgroundColor: '#ffb495'
   },
   emptyState: { 
     alignItems: 'center', 

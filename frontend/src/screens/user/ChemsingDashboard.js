@@ -1557,7 +1557,7 @@ export default function ChemsingDashboard({ navigation, route }) {
           <Modal visible={true} transparent animationType="fade">
             <View style={styles.modalOverlay}>
               <View style={styles.modalContent}>
-                <MaterialIcons name="question-answer" size={64} color="#00A8A8" style={{ alignSelf: 'center', marginBottom: 16 }} />
+                <MaterialIcons name="question-answer" size={64} color="#ffb495" style={{ alignSelf: 'center', marginBottom: 16 }} />
                 <Text style={styles.modalTitle}>Ask a Question</Text>
                 <Text style={styles.modalDesc}>Submit your question and admin will reply as soon as possible.</Text>
 
@@ -1633,7 +1633,7 @@ export default function ChemsingDashboard({ navigation, route }) {
                     <View style={styles.doctorSelectContent}>
                       {selectedDoctor ? (
                         <>
-                          <MaterialIcons name={selectedDoctor.icon} size={24} color="#00A8A8" />
+                          <MaterialIcons name={selectedDoctor.icon} size={24} color="#ffb495" />
                           <View style={styles.doctorSelectInfo}>
                             <Text style={styles.doctorSelectName}>{selectedDoctor.name}</Text>
                             <Text style={styles.doctorSelectSpecialty}>{selectedDoctor.specialty}</Text>
@@ -1643,7 +1643,7 @@ export default function ChemsingDashboard({ navigation, route }) {
                         <Text style={styles.doctorSelectPlaceholder}>Choose a doctor...</Text>
                       )}
                     </View>
-                    <MaterialIcons name="arrow-drop-down" size={28} color="#00A8A8" />
+                    <MaterialIcons name="arrow-drop-down" size={28} color="#b37e68" />
                   </TouchableOpacity>
                 </View>
 
@@ -1667,7 +1667,7 @@ export default function ChemsingDashboard({ navigation, route }) {
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.appointmentSubmitButton} onPress={requestAppointment}>
                     <MaterialIcons name="send" size={18} color="#FFFFFF" />
-                    <Text style={styles.appointmentSubmitButtonText}>Submit Request</Text>
+                    <Text style={styles.appointmentSubmitButtonText}>Submit</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -1698,14 +1698,14 @@ export default function ChemsingDashboard({ navigation, route }) {
                       setShowDoctorPicker(false);
                     }}>
                     <View style={styles.doctorCardIconCircle}>
-                      <MaterialIcons name={doctor.icon} size={28} color="#00A8A8" />
+                      <MaterialIcons name={doctor.icon} size={28} color="#ffb495" />
                     </View>
                     <View style={styles.doctorCardInfo}>
                       <Text style={styles.doctorCardName}>{doctor.name}</Text>
                       <Text style={styles.doctorCardSpecialty}>{doctor.specialty}</Text>
                     </View>
                     {selectedDoctor?.id === doctor.id && (
-                      <MaterialIcons name="check-circle" size={24} color="#00A8A8" />
+                      <MaterialIcons name="check-circle" size={24} color=" #28a745" />
                     )}
                   </TouchableOpacity>
                 ))}
@@ -2155,11 +2155,11 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: '#00A8A8',
+    backgroundColor: '#ffb495',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
-    shadowColor: '#00A8A8',
+    shadowColor: ' #b37e68',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -2193,11 +2193,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     borderWidth: 2,
-    borderColor: '#00A8A8',
+    borderColor: '#ffb495',
     borderRadius: 12,
     backgroundColor: '#FFFFFF',
     padding: 14,
-    shadowColor: '#00A8A8',
+    shadowColor: ' #b37e68',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -2266,14 +2266,14 @@ const styles = StyleSheet.create({
   },
   appointmentSubmitButton: {
     flex: 1,
-    backgroundColor: '#00A8A8',
+    backgroundColor: '#28a745',
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
     gap: 8,
-    shadowColor: '#00A8A8',
+    shadowColor: '#28a745 - 20%',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
@@ -2321,7 +2321,7 @@ const styles = StyleSheet.create({
   },
   doctorCardSelected: {
     backgroundColor: '#E0F7F7',
-    borderColor: '#00A8A8',
+    borderColor: '#ffb495',
   },
   doctorCardIconCircle: {
     width: 48,
@@ -2331,7 +2331,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
-    shadowColor: '#00A8A8',
+    shadowColor: ' #b37e68',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,

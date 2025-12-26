@@ -356,10 +356,10 @@ export default function AdminDashboard({ navigation }) {
               </View>
               <View style={{ flexDirection: 'row', gap: 6 }}>
                 <TouchableOpacity style={styles.calendarBtn} onPress={() => setCalendarModal({ username: p.username, records: userAttendance })}>
-                  <MaterialIcons name="calendar-today" size={18} color="#10B981" />
+                  <MaterialIcons name="calendar-today" size={18} color="#ffb495" />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.editBtn} onPress={() => setEditModal({ username: p.username, records: userAttendance })}>
-                  <MaterialIcons name="edit" size={18} color="#3B82F6" />
+                  <MaterialIcons name="edit" size={18} color="#ffb495" />
                 </TouchableOpacity>
               </View>
             </View>
@@ -373,7 +373,7 @@ export default function AdminDashboard({ navigation }) {
     <View>
       <TouchableOpacity style={styles.contentSection} onPress={() => navigation.navigate('AdminContentManager', { initialTab: 'videos' })}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-          <MaterialIcons name="play-circle-outline" size={20} color="#00A8A8" />
+          <MaterialIcons name="play-circle-outline" size={20} color="#ffb495" />
           <Text style={styles.contentSectionTitle}>Videos</Text>
         </View>
         <MaterialIcons name="chevron-right" size={20} color="#6B7280" />
@@ -381,7 +381,7 @@ export default function AdminDashboard({ navigation }) {
 
       <TouchableOpacity style={styles.contentSection} onPress={() => navigation.navigate('AdminContentManager', { initialTab: 'manifestation' })}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-          <MaterialIcons name="auto-awesome" size={20} color="#00A8A8" />
+          <MaterialIcons name="auto-awesome" size={20} color="#ffb495" />
           <Text style={styles.contentSectionTitle}>Manifestation</Text>
         </View>
         <MaterialIcons name="chevron-right" size={20} color="#6B7280" />
@@ -389,7 +389,7 @@ export default function AdminDashboard({ navigation }) {
 
       <TouchableOpacity style={styles.contentSection} onPress={() => navigation.navigate('AdminContentManager', { initialTab: 'habits' })}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-          <MaterialIcons name="task-alt" size={20} color="#00A8A8" />
+          <MaterialIcons name="task-alt" size={20} color="#ffb495" />
           <Text style={styles.contentSectionTitle}>Habits</Text>
         </View>
         <MaterialIcons name="chevron-right" size={20} color="#6B7280" />
@@ -397,7 +397,7 @@ export default function AdminDashboard({ navigation }) {
 
       <TouchableOpacity style={styles.contentSection} onPress={() => navigation.navigate('AdminContentManager', { initialTab: 'workshops' })}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-          <MaterialIcons name="event" size={20} color="#00A8A8" />
+          <MaterialIcons name="event" size={20} color="#ffb495" />
           <Text style={styles.contentSectionTitle}>Workshops</Text>
         </View>
         <MaterialIcons name="chevron-right" size={20} color="#6B7280" />
@@ -444,7 +444,7 @@ export default function AdminDashboard({ navigation }) {
               <Text style={styles.userDetail}>Registered: {new Date(user.createdAt).toLocaleDateString()}</Text>
             </View>
             <TouchableOpacity style={styles.approveUserBtn} onPress={() => approveUserAccount(user.username)}>
-              <MaterialIcons name="check-circle" size={24} color="#10B981" />
+              <MaterialIcons name="check-circle" size={24} color="#ffb495" />
             </TouchableOpacity>
           </View>
         ))
@@ -481,7 +481,7 @@ export default function AdminDashboard({ navigation }) {
           </View>
           <View style={{ flexDirection: 'row', gap: 8 }}>
             <TouchableOpacity style={styles.viewBtn} onPress={() => loadUserDetails(user)}>
-              <MaterialIcons name="visibility" size={20} color="#3B82F6" />
+              <MaterialIcons name="visibility" size={20} color="#ffb495" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.removeBtn} onPress={() => setDeleteModal(user.username)}>
               <MaterialIcons name="delete" size={20} color="#EF4444" />
@@ -750,24 +750,24 @@ export default function AdminDashboard({ navigation }) {
       {/* Tab Bar */}
       <View style={styles.tabBar}>
         <TouchableOpacity style={[styles.tab, activeTab === 'overview' && styles.tabActive]} onPress={() => setActiveTab('overview')}>
-          <MaterialIcons name="dashboard" size={18} color={activeTab === 'overview' ? '#00A8A8' : '#6B7280'} />
+          <MaterialIcons name="dashboard" size={18} color={activeTab === 'overview' ? '#ffb495' : '#6B7280'} />
           <Text style={[styles.tabText, activeTab === 'overview' && styles.tabTextActive]}>Overview</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.tab, activeTab === 'content' && styles.tabActive]} onPress={() => setActiveTab('content')}>
-          <MaterialIcons name="video-library" size={18} color={activeTab === 'content' ? '#00A8A8' : '#6B7280'} />
+          <MaterialIcons name="video-library" size={18} color={activeTab === 'content' ? '#ffb495' : '#6B7280'} />
           <Text style={[styles.tabText, activeTab === 'content' && styles.tabTextActive]}>Course</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.tab, activeTab === 'appointments' && styles.tabActive]} onPress={() => setActiveTab('appointments')}>
-          <MaterialIcons name="event" size={18} color={activeTab === 'appointments' ? '#00A8A8' : '#6B7280'} />
+          <MaterialIcons name="event" size={18} color={activeTab === 'appointments' ? '#ffb495' : '#6B7280'} />
           <Text style={[styles.tabText, activeTab === 'appointments' && styles.tabTextActive]}>Appointment</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.tab, activeTab === 'qa' && styles.tabActive]} onPress={() => setActiveTab('qa')}>
-          <MaterialIcons name="question-answer" size={18} color={activeTab === 'qa' ? '#00A8A8' : '#6B7280'} />
+          <MaterialIcons name="question-answer" size={18} color={activeTab === 'qa' ? '#ffb495' : '#6B7280'} />
           <Text style={[styles.tabText, activeTab === 'qa' && styles.tabTextActive]}>Q&A</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.tab, activeTab === 'pending' && styles.tabActive]} onPress={() => setActiveTab('pending')}>
           <View style={{ position: 'relative' }}>
-            <MaterialIcons name="person-add" size={18} color={activeTab === 'pending' ? '#00A8A8' : '#6B7280'} />
+            <MaterialIcons name="person-add" size={18} color={activeTab === 'pending' ? '#ffb495' : '#6B7280'} />
             {pendingUsers.length > 0 && (
               <View style={styles.pendingBadge}>
                 <Text style={styles.pendingBadgeText}>{pendingUsers.length}</Text>
@@ -777,7 +777,7 @@ export default function AdminDashboard({ navigation }) {
           <Text style={[styles.tabText, activeTab === 'pending' && styles.tabTextActive]}>Pending</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.tab, activeTab === 'healing' && styles.tabActive]} onPress={() => setActiveTab('healing')}>
-          <MaterialIcons name="collections" size={18} color={activeTab === 'healing' ? '#00A8A8' : '#6B7280'} />
+          <MaterialIcons name="collections" size={18} color={activeTab === 'healing' ? '#ffb495' : '#6B7280'} />
           <Text style={[styles.tabText, activeTab === 'healing' && styles.tabTextActive]}>Gallery</Text>
         </TouchableOpacity>
       </View>
@@ -924,11 +924,11 @@ export default function AdminDashboard({ navigation }) {
                 <Text style={styles.appointmentModalLabel}>Schedule Date & Time:</Text>
                 <View style={styles.dateTimeRow}>
                   <TouchableOpacity style={styles.dateTimeBtn} onPress={() => setShowScheduleDatePicker(true)}>
-                    <MaterialIcons name="event" size={16} color="#00A8A8" style={{ marginRight: 6 }} />
+                    <MaterialIcons name="event" size={16} color="#ffb495" style={{ marginRight: 6 }} />
                     <Text style={styles.dateTimeBtnText}>{scheduleDate.toLocaleDateString()}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.dateTimeBtn} onPress={() => setShowScheduleTimePicker(true)}>
-                    <MaterialIcons name="access-time" size={16} color="#00A8A8" style={{ marginRight: 6 }} />
+                    <MaterialIcons name="access-time" size={16} color="#ffb495" style={{ marginRight: 6 }} />
                     <Text style={styles.dateTimeBtnText}>{scheduleDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
                   </TouchableOpacity>
                 </View>
@@ -1172,28 +1172,28 @@ export default function AdminDashboard({ navigation }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F5F7FA' },
-  header: { backgroundColor: '#1B3B6F', paddingHorizontal: 20, paddingVertical: 16, paddingTop: 50, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 4 },
+  header: { backgroundColor: '#063159', paddingHorizontal: 20, paddingVertical: 16, paddingTop: 50, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 4 },
   headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  avatar: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#00A8A8', justifyContent: 'center', alignItems: 'center' },
+  avatar: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#ffb495', justifyContent: 'center', alignItems: 'center' },
   avatarText: { color: '#FFFFFF', fontSize: 18, fontFamily: 'JosefinSans-Bold' },
   greeting: { color: '#FFFFFF', fontSize: 16, fontFamily: 'JosefinSans-Bold', marginBottom: 4 },
-  adminPill: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 10, backgroundColor: '#00A8A8' },
+  adminPill: { paddingHorizontal: 30, paddingVertical: 3, borderRadius: 50, backgroundColor: '#b37e68' },
   adminText: { color: '#FFFFFF', fontSize: 11, fontFamily: 'WorkSans-Bold', letterSpacing: 0.3 },
   headerRight: { flexDirection: 'row', gap: 6, alignItems: 'center' },
-  usersBtn: { backgroundColor: '#00A8A8', width: 36, height: 36, borderRadius: 8, justifyContent: 'center', alignItems: 'center' },
+  usersBtn: { backgroundColor: '#ffb495', width: 36, height: 36, borderRadius: 8, justifyContent: 'center', alignItems: 'center' },
   badge: { position: 'absolute', top: -4, right: -4, backgroundColor: '#E74C3C', borderRadius: 8, minWidth: 16, height: 16, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 3 },
   badgeText: { color: '#FFFFFF', fontSize: 9, fontFamily: 'WorkSans-Bold' },
-  logoutBtn: { backgroundColor: '#00A8A8', paddingHorizontal: 10, paddingVertical: 8, borderRadius: 8, height: 36, justifyContent: 'center' },
+  logoutBtn: { backgroundColor: '#ffb495', paddingHorizontal: 10, paddingVertical: 8, borderRadius: 8, height: 36, justifyContent: 'center' },
   logoutText: { color: '#FFFFFF', fontSize: 11, fontFamily: 'WorkSans-Bold' },
   tabBar: { flexDirection: 'row', backgroundColor: '#FFFFFF', borderBottomWidth: 1, borderBottomColor: '#E5E7EB', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 2, elevation: 2 },
   tab: { flex: 1, paddingVertical: 10, paddingHorizontal: 4, alignItems: 'center', gap: 2 },
-  tabActive: { borderBottomWidth: 3, borderBottomColor: '#00A8A8' },
+  tabActive: { borderBottomWidth: 3, borderBottomColor: '#ffb495' },
   tabText: { fontSize: 9, color: '#6B7280', fontFamily: 'WorkSans-Medium' },
-  tabTextActive: { color: '#00A8A8', fontFamily: 'WorkSans-Bold' },
+  tabTextActive: { color: '#ffb495', fontFamily: 'WorkSans-Bold' },
   content: { flex: 1, padding: 16 },
   statsRow: { flexDirection: 'row', gap: 10, marginBottom: 16 },
   statCard: { flex: 1, backgroundColor: '#FFFFFF', borderRadius: 12, padding: 16, alignItems: 'center', borderWidth: 1, borderColor: '#E5E7EB', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3, elevation: 2 },
-  statValue: { fontSize: 28, fontFamily: 'JosefinSans-Bold', color: '#00A8A8', marginBottom: 4 },
+  statValue: { fontSize: 28, fontFamily: 'JosefinSans-Bold', color: '#ffb495', marginBottom: 4 },
   statLabel: { fontSize: 12, color: '#6B7280', textAlign: 'center', fontFamily: 'WorkSans-Medium' },
   card: { backgroundColor: '#FFFFFF', borderRadius: 12, padding: 16, marginBottom: 16, borderWidth: 1, borderColor: '#E5E7EB', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3, elevation: 2 },
   cardTitle: { fontSize: 17, fontFamily: 'JosefinSans-Bold', color: '#1B3B6F', marginBottom: 14, letterSpacing: 0.3 },
@@ -1206,17 +1206,17 @@ const styles = StyleSheet.create({
   progressBadges: { flexDirection: 'row', gap: 5 },
   viewBtn: { padding: 6, backgroundColor: '#DBEAFE', borderRadius: 5 },
   removeBtn: { padding: 6, backgroundColor: '#FEE2E2', borderRadius: 5 },
-  badgeGreen: { backgroundColor: '#10B981', color: '#fff', fontSize: 11, fontFamily: 'WorkSans-Bold', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6 },
+  badgeGreen: { backgroundColor: '#28a745', color: '#fff', fontSize: 11, fontFamily: 'WorkSans-Bold', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6 },
   badgeGray: { backgroundColor: '#E5E7EB', color: '#6B7280', fontSize: 11, fontFamily: 'WorkSans-Bold', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6 },
-  addBtn: { backgroundColor: '#00A8A8', paddingVertical: 10, paddingHorizontal: 14, borderRadius: 8, marginBottom: 8, shadowColor: '#00A8A8', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 3 },
+  addBtn: { backgroundColor: '#ffb495', paddingVertical: 10, paddingHorizontal: 14, borderRadius: 8, marginBottom: 8, shadowColor: '#00A8A8', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 3 },
   addBtnText: { color: '#FFFFFF', fontSize: 12, fontFamily: 'WorkSans-Bold', textAlign: 'center', letterSpacing: 0.2 },
   userItem: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#F3F4F6' },
-  userAvatar: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#00A8A8', justifyContent: 'center', alignItems: 'center' },
+  userAvatar: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#ffb495', justifyContent: 'center', alignItems: 'center' },
   userAvatarText: { color: '#FFFFFF', fontSize: 18, fontFamily: 'JosefinSans-Bold' },
   userInfo: { flex: 1 },
   userName: { fontSize: 15, fontFamily: 'WorkSans-Bold', color: '#1B3B6F', marginBottom: 3 },
   userDetail: { fontSize: 13, color: '#6B7280', marginTop: 2, fontFamily: 'WorkSans-Regular' },
-  userLevel: { fontSize: 13, color: '#00A8A8', fontFamily: 'WorkSans-Bold', marginTop: 3 },
+  userLevel: { fontSize: 13, color: '#b37e68', fontFamily: 'WorkSans-Bold', marginTop: 3 },
   contentDesc: { fontSize: 11, color: '#6B7280', textAlign: 'center', marginTop: 6, lineHeight: 16, fontFamily: 'WorkSans-Regular' },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.75)', justifyContent: 'center', alignItems: 'center' },
   filterModal: { backgroundColor: '#FFFFFF', borderRadius: 16, padding: 20, width: '85%', maxWidth: 360 },
@@ -1224,13 +1224,13 @@ const styles = StyleSheet.create({
   filterTitle: { fontSize: 18, fontFamily: 'JosefinSans-Bold', color: '#1B3B6F' },
   filterOptions: { flexDirection: 'row', gap: 10, marginBottom: 20 },
   filterOption: { flex: 1, padding: 12, backgroundColor: '#F9FAFB', borderRadius: 10, alignItems: 'center', borderWidth: 2, borderColor: '#E5E7EB' },
-  filterOptionActive: { backgroundColor: '#E0F7F7', borderColor: '#00A8A8' },
+  filterOptionActive: { backgroundColor: '#E0F7F7', borderColor: '#11bbd6' },
   filterOptionText: { fontSize: 13, fontFamily: 'WorkSans-Medium', color: '#6B7280' },
-  filterOptionTextActive: { color: '#00A8A8', fontFamily: 'WorkSans-Bold' },
+  filterOptionTextActive: { color: '#11bbd6', fontFamily: 'WorkSans-Bold' },
   filterActions: { flexDirection: 'row', gap: 10 },
   clearFilterBtn: { flex: 1, padding: 12, backgroundColor: '#F3F4F6', borderRadius: 10, alignItems: 'center' },
   clearFilterText: { fontSize: 14, fontFamily: 'WorkSans-Bold', color: '#6B7280' },
-  applyFilterBtn: { flex: 1, padding: 12, backgroundColor: '#00A8A8', borderRadius: 10, alignItems: 'center' },
+  applyFilterBtn: { flex: 1, padding: 12, backgroundColor: '#11bbd6', borderRadius: 10, alignItems: 'center' },
   applyFilterText: { fontSize: 14, fontFamily: 'WorkSans-Bold', color: '#FFFFFF' },
   deleteModalContent: { backgroundColor: '#FFFFFF', borderRadius: 24, padding: 28, width: '90%', maxWidth: 400, alignSelf: 'center', marginTop: 'auto', marginBottom: 'auto' },
   deleteModalTitle: { fontSize: 22, fontFamily: 'JosefinSans-Bold', color: '#111827', marginBottom: 12, textAlign: 'center' },
@@ -1250,11 +1250,11 @@ const styles = StyleSheet.create({
   attendanceStatus: { fontSize: 12, color: '#6B7280', marginTop: 4, fontFamily: 'WorkSans-Regular' },
   attendanceActions: { flexDirection: 'row', gap: 8 },
   statusBtn: { paddingHorizontal: 12, paddingVertical: 6, backgroundColor: '#F3F4F6', borderRadius: 8, borderWidth: 2, borderColor: 'transparent' },
-  statusBtnActive: { backgroundColor: '#DBEAFE', borderColor: '#3B82F6' },
+  statusBtnActive: { backgroundColor: '#DBEAFE', borderColor: '#28a745' },
   statusBtnActiveGreen: { backgroundColor: '#E8F5E9', borderColor: '#27AE60' },
   statusBtnActiveRed: { backgroundColor: '#FFEBEE', borderColor: '#E74C3C' },
   statusBtnText: { fontSize: 12, fontFamily: 'WorkSans-Medium', color: '#6B7280' },
-  statusBtnTextActive: { color: '#3B82F6', fontFamily: 'WorkSans-Bold' },
+  statusBtnTextActive: { color: '#28a745', fontFamily: 'WorkSans-Bold' },
   statusBtnTextActiveGreen: { color: '#27AE60', fontFamily: 'WorkSans-Bold' },
   statusBtnTextActiveRed: { color: '#E74C3C', fontFamily: 'WorkSans-Bold' },
   attendanceItemAbsent: { backgroundColor: '#FFF5F5' },
@@ -1279,9 +1279,9 @@ const styles = StyleSheet.create({
   appointmentBadgeText: { color: '#FFF', fontSize: 9, fontFamily: 'WorkSans-Bold', letterSpacing: 0.2 },
   appointmentReason: { fontSize: 12, color: '#1B3B6F', marginBottom: 5, lineHeight: 16, fontFamily: 'WorkSans-Regular' },
   appointmentDate: { fontSize: 10, color: '#6B7280', marginBottom: 2, fontFamily: 'WorkSans-Regular' },
-  appointmentScheduled: { fontSize: 10, color: '#10B981', fontFamily: 'WorkSans-Bold', marginBottom: 2 },
+  appointmentScheduled: { fontSize: 10, color: '#28a745', fontFamily: 'WorkSans-Bold', marginBottom: 2 },
   appointmentNotes: { fontSize: 10, color: '#6B7280', fontStyle: 'italic', marginBottom: 5, lineHeight: 14, fontFamily: 'WorkSans-Regular' },
-  reviewBtn: { backgroundColor: '#00A8A8', paddingVertical: 8, paddingHorizontal: 12, borderRadius: 5, marginTop: 5 },
+  reviewBtn: { backgroundColor: '#28a745', paddingVertical: 8, paddingHorizontal: 12, borderRadius: 5, marginTop: 5 },
   reviewBtnText: { color: '#FFF', fontSize: 11, fontFamily: 'WorkSans-Bold', textAlign: 'center', letterSpacing: 0.2 },
   noData: { fontSize: 11, color: '#9CA3AF', textAlign: 'center', padding: 12, fontStyle: 'italic', fontFamily: 'WorkSans-Regular' },
   appointmentModalContent: { backgroundColor: '#FFFFFF', borderRadius: 16, padding: 16, maxHeight: '75%', width: '90%', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.2, shadowRadius: 8, elevation: 8 },
@@ -1292,7 +1292,7 @@ const styles = StyleSheet.create({
   dateTimeBtn: { flex: 1, backgroundColor: '#F9FAFB', padding: 10, borderRadius: 8, borderWidth: 1, borderColor: '#00A8A8', alignItems: 'center', flexDirection: 'row', justifyContent: 'center' },
   dateTimeBtnText: { fontSize: 11, fontFamily: 'WorkSans-Bold', color: '#1B3B6F' },
   appointmentNotesInput: { backgroundColor: '#F9FAFB', padding: 10, borderRadius: 8, borderWidth: 1, borderColor: '#E5E7EB', fontSize: 12, color: '#1B3B6F', minHeight: 70, textAlignVertical: 'top', marginBottom: 10, fontFamily: 'WorkSans-Regular' },
-  approveBtn: { backgroundColor: '#10B981', padding: 12, borderRadius: 10, marginBottom: 8, shadowColor: '#10B981', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 4 },
+  approveBtn: { backgroundColor: '#28a745', padding: 12, borderRadius: 10, marginBottom: 8, shadowColor: '#28a745', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 4 },
   approveBtnText: { color: '#FFF', fontSize: 13, fontFamily: 'WorkSans-Bold', textAlign: 'center' },
   rejectBtn: { backgroundColor: '#DC2626', padding: 12, borderRadius: 10, shadowColor: '#DC2626', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 4 },
   rejectBtnText: { color: '#FFF', fontSize: 13, fontFamily: 'WorkSans-Bold', textAlign: 'center' },
@@ -1313,17 +1313,17 @@ const styles = StyleSheet.create({
   contentSection: { backgroundColor: '#FFFFFF', padding: 12, borderRadius: 8, marginBottom: 8, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderWidth: 1, borderColor: '#E5E7EB', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 2, elevation: 2 },
   contentSectionTitle: { fontSize: 13, fontFamily: 'WorkSans-Bold', color: '#1B3B6F' },
   successAlertContent: { backgroundColor: '#FFFFFF', borderRadius: 16, padding: 24, width: '85%', alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.2, shadowRadius: 8, elevation: 8 },
-  successIconCircle: { width: 56, height: 56, borderRadius: 28, backgroundColor: '#10B981', justifyContent: 'center', alignItems: 'center', marginBottom: 16 },
+  successIconCircle: { width: 56, height: 56, borderRadius: 28, backgroundColor: '#28a745', justifyContent: 'center', alignItems: 'center', marginBottom: 16 },
   successAlertTitle: { fontSize: 18, fontFamily: 'JosefinSans-Bold', color: '#1B3B6F', marginBottom: 8 },
   successAlertDesc: { fontSize: 14, color: '#6B7280', textAlign: 'center', marginBottom: 20, lineHeight: 20, fontFamily: 'WorkSans-Regular' },
-  successAlertBtn: { backgroundColor: '#00A8A8', paddingVertical: 12, paddingHorizontal: 32, borderRadius: 10, width: '100%' },
+  successAlertBtn: { backgroundColor: '#28a745', paddingVertical: 12, paddingHorizontal: 32, borderRadius: 10, width: '100%' },
   successAlertBtnText: { color: '#FFFFFF', fontSize: 14, fontFamily: 'WorkSans-Bold', textAlign: 'center' },
   pendingBadge: { position: 'absolute', top: -6, right: -8, backgroundColor: '#FF6B6B', borderRadius: 8, minWidth: 16, height: 16, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 4 },
   pendingBadgeText: { color: '#FFFFFF', fontSize: 9, fontFamily: 'WorkSans-Bold' },
   doctorFilterRow: { flexDirection: 'row', gap: 8 },
   doctorFilterBtn: { paddingVertical: 10, paddingHorizontal: 16, backgroundColor: '#F3F4F6', borderRadius: 10, alignItems: 'center', borderWidth: 2, borderColor: 'transparent' },
-  doctorFilterBtnActive: { backgroundColor: '#E0F7F7', borderColor: '#00A8A8' },
+  doctorFilterBtnActive: { backgroundColor: '#E0F7F7', borderColor: '#28a745' },
   doctorFilterText: { fontSize: 13, fontFamily: 'WorkSans-Medium', color: '#6B7280' },
-  doctorFilterTextActive: { color: '#00A8A8', fontFamily: 'WorkSans-Bold' },
-  appointmentDoctor: { fontSize: 13, fontFamily: 'WorkSans-Bold', color: '#00A8A8', marginBottom: 6 },
+  doctorFilterTextActive: { color: '#28a745', fontFamily: 'WorkSans-Bold' },
+  appointmentDoctor: { fontSize: 13, fontFamily: 'WorkSans-Bold', color: '#28a745', marginBottom: 6 },
 });

@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   },
   formSection: {
     flex: 1,
-   
+
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
     marginTop: -20,
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     opacity: 0.90,
     zIndex: 0,
     transform: [{ rotate: '180deg' }],
-     tintColor: '#2b6230ff',
+    tintColor: '#2b6230ff',
   },
   welcomeTitle: {
     fontSize: 18,
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   forgotText: {
-   color: '#254866ff',
+    color: '#254866ff',
     fontSize: 13,
     fontFamily: 'WorkSans-Medium',
     textDecorationLine: 'underline',
