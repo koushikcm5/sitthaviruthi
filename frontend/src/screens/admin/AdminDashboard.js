@@ -343,23 +343,52 @@ export default function AdminDashboard({ navigation }) {
         </View>
 
         {filteredProgress.map((p, i) => {
+          const user = users.find(u => u.username === p.username);
           const userAttendance = attendanceRecords.filter(a => a.username === p.username);
+
           return (
             <View key={i} style={styles.progressItem}>
-              <View style={{ flex: 1, marginRight: 12 }}>
+              {/* Avatar */}
+              <TouchableOpacity style={styles.userAvatarSmall} onPress={() => {
+                if (user?.profilePictureUrl) {
+                  const fullUrl = user.profilePictureUrl.startsWith('http') ? user.profilePictureUrl : `${API_URL.replace('/api/v1', '')}${user.profilePictureUrl}`;
+                  setSelectedImage(fullUrl);
+                }
+              }}>
+                {user?.profilePictureUrl ? (
+                  <Image
+                    source={{ uri: user.profilePictureUrl.startsWith('http') ? user.profilePictureUrl : `${API_URL.replace('/api/v1', '')}${user.profilePictureUrl}` }}
+                    style={{ width: 40, height: 40, borderRadius: 20 }}
+                  />
+                ) : (
+                  <Text style={styles.userAvatarTextSmall}>{user?.name?.[0]?.toUpperCase() || p.username?.[0]?.toUpperCase()}</Text>
+                )}
+              </TouchableOpacity>
+
+              <View style={{ flex: 1, marginHorizontal: 12 }}>
                 <Text style={styles.progressUser}>{p.username}</Text>
                 <View style={styles.progressBadges}>
-                  <Text style={p.videoCompleted ? styles.badgeGreen : styles.badgeGray}>Video</Text>
-                  <Text style={p.routineCompleted ? styles.badgeGreen : styles.badgeGray}>Routine</Text>
-                  <Text style={p.habitsCompleted ? styles.badgeGreen : styles.badgeGray}>Habits</Text>
+                  <View style={[styles.badgePill, p.videoCompleted ? styles.badgeActive : styles.badgeInactive]}>
+                    <MaterialIcons name={p.videoCompleted ? "check-circle" : "radio-button-unchecked"} size={10} color={p.videoCompleted ? "#27AE60" : "#9CA3AF"} />
+                    <Text style={[styles.badgeText, p.videoCompleted ? styles.badgeTextActive : styles.badgeTextInactive]}>Video</Text>
+                  </View>
+                  <View style={[styles.badgePill, p.routineCompleted ? styles.badgeActive : styles.badgeInactive]}>
+                    <MaterialIcons name={p.routineCompleted ? "check-circle" : "radio-button-unchecked"} size={10} color={p.routineCompleted ? "#27AE60" : "#9CA3AF"} />
+                    <Text style={[styles.badgeText, p.routineCompleted ? styles.badgeTextActive : styles.badgeTextInactive]}>Routine</Text>
+                  </View>
+                  <View style={[styles.badgePill, p.habitsCompleted ? styles.badgeActive : styles.badgeInactive]}>
+                    <MaterialIcons name={p.habitsCompleted ? "check-circle" : "radio-button-unchecked"} size={10} color={p.habitsCompleted ? "#27AE60" : "#9CA3AF"} />
+                    <Text style={[styles.badgeText, p.habitsCompleted ? styles.badgeTextActive : styles.badgeTextInactive]}>Habits</Text>
+                  </View>
                 </View>
               </View>
+
               <View style={{ flexDirection: 'row', gap: 6 }}>
                 <TouchableOpacity style={styles.calendarBtn} onPress={() => setCalendarModal({ username: p.username, records: userAttendance })}>
-                  <MaterialIcons name="calendar-today" size={18} color="#ffb495" />
+                  <MaterialIcons name="calendar-today" size={18} color="#27AE60" />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.editBtn} onPress={() => setEditModal({ username: p.username, records: userAttendance })}>
-                  <MaterialIcons name="edit" size={18} color="#ffb495" />
+                  <MaterialIcons name="edit" size={18} color="#b37e68" />
                 </TouchableOpacity>
               </View>
             </View>
@@ -1208,7 +1237,7 @@ const styles = StyleSheet.create({
   removeBtn: { padding: 6, backgroundColor: '#FEE2E2', borderRadius: 5 },
   badgeGreen: { backgroundColor: '#28a745', color: '#fff', fontSize: 11, fontFamily: 'WorkSans-Bold', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6 },
   badgeGray: { backgroundColor: '#E5E7EB', color: '#6B7280', fontSize: 11, fontFamily: 'WorkSans-Bold', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6 },
-  addBtn: { backgroundColor: '#ffb495', paddingVertical: 10, paddingHorizontal: 14, borderRadius: 8, marginBottom: 8, shadowColor: '#00A8A8', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 3 },
+  addBtn: { backgroundColor: '#ffb495', paddingVertical: 10, paddingHorizontal: 14, borderRadius: 8, marginBottom: 8, shadowColor: '#b37e68', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 3 },
   addBtnText: { color: '#FFFFFF', fontSize: 12, fontFamily: 'WorkSans-Bold', textAlign: 'center', letterSpacing: 0.2 },
   userItem: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#F3F4F6' },
   userAvatar: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#ffb495', justifyContent: 'center', alignItems: 'center' },
@@ -1224,13 +1253,13 @@ const styles = StyleSheet.create({
   filterTitle: { fontSize: 18, fontFamily: 'JosefinSans-Bold', color: '#1B3B6F' },
   filterOptions: { flexDirection: 'row', gap: 10, marginBottom: 20 },
   filterOption: { flex: 1, padding: 12, backgroundColor: '#F9FAFB', borderRadius: 10, alignItems: 'center', borderWidth: 2, borderColor: '#E5E7EB' },
-  filterOptionActive: { backgroundColor: '#E0F7F7', borderColor: '#11bbd6' },
+  filterOptionActive: { backgroundColor: '#FFF5F0', borderColor: '#b37e68' },
   filterOptionText: { fontSize: 13, fontFamily: 'WorkSans-Medium', color: '#6B7280' },
-  filterOptionTextActive: { color: '#11bbd6', fontFamily: 'WorkSans-Bold' },
+  filterOptionTextActive: { color: '#b37e68', fontFamily: 'WorkSans-Bold' },
   filterActions: { flexDirection: 'row', gap: 10 },
   clearFilterBtn: { flex: 1, padding: 12, backgroundColor: '#F3F4F6', borderRadius: 10, alignItems: 'center' },
   clearFilterText: { fontSize: 14, fontFamily: 'WorkSans-Bold', color: '#6B7280' },
-  applyFilterBtn: { flex: 1, padding: 12, backgroundColor: '#11bbd6', borderRadius: 10, alignItems: 'center' },
+  applyFilterBtn: { flex: 1, padding: 12, backgroundColor: '#b37e68', borderRadius: 10, alignItems: 'center' },
   applyFilterText: { fontSize: 14, fontFamily: 'WorkSans-Bold', color: '#FFFFFF' },
   deleteModalContent: { backgroundColor: '#FFFFFF', borderRadius: 24, padding: 28, width: '90%', maxWidth: 400, alignSelf: 'center', marginTop: 'auto', marginBottom: 'auto' },
   deleteModalTitle: { fontSize: 22, fontFamily: 'JosefinSans-Bold', color: '#111827', marginBottom: 12, textAlign: 'center' },
@@ -1289,7 +1318,7 @@ const styles = StyleSheet.create({
   appointmentModalReason: { fontSize: 12, color: '#6B7280', marginBottom: 10, lineHeight: 16, backgroundColor: '#F9FAFB', padding: 10, borderRadius: 8, fontFamily: 'WorkSans-Regular' },
   appointmentModalLabel: { fontSize: 12, fontFamily: 'WorkSans-Bold', color: '#1B3B6F', marginBottom: 6, marginTop: 4 },
   dateTimeRow: { flexDirection: 'row', gap: 8, marginBottom: 10 },
-  dateTimeBtn: { flex: 1, backgroundColor: '#F9FAFB', padding: 10, borderRadius: 8, borderWidth: 1, borderColor: '#00A8A8', alignItems: 'center', flexDirection: 'row', justifyContent: 'center' },
+  dateTimeBtn: { flex: 1, backgroundColor: '#F9FAFB', padding: 10, borderRadius: 8, borderWidth: 1, borderColor: '#b37e68', alignItems: 'center', flexDirection: 'row', justifyContent: 'center' },
   dateTimeBtnText: { fontSize: 11, fontFamily: 'WorkSans-Bold', color: '#1B3B6F' },
   appointmentNotesInput: { backgroundColor: '#F9FAFB', padding: 10, borderRadius: 8, borderWidth: 1, borderColor: '#E5E7EB', fontSize: 12, color: '#1B3B6F', minHeight: 70, textAlignVertical: 'top', marginBottom: 10, fontFamily: 'WorkSans-Regular' },
   approveBtn: { backgroundColor: '#28a745', padding: 12, borderRadius: 10, marginBottom: 8, shadowColor: '#28a745', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 4 },
@@ -1322,8 +1351,16 @@ const styles = StyleSheet.create({
   pendingBadgeText: { color: '#FFFFFF', fontSize: 9, fontFamily: 'WorkSans-Bold' },
   doctorFilterRow: { flexDirection: 'row', gap: 8 },
   doctorFilterBtn: { paddingVertical: 10, paddingHorizontal: 16, backgroundColor: '#F3F4F6', borderRadius: 10, alignItems: 'center', borderWidth: 2, borderColor: 'transparent' },
-  doctorFilterBtnActive: { backgroundColor: '#E0F7F7', borderColor: '#28a745' },
+  doctorFilterBtnActive: { backgroundColor: '#FFF5F0', borderColor: '#b37e68' },
   doctorFilterText: { fontSize: 13, fontFamily: 'WorkSans-Medium', color: '#6B7280' },
-  doctorFilterTextActive: { color: '#28a745', fontFamily: 'WorkSans-Bold' },
+  doctorFilterTextActive: { color: '#b37e68', fontFamily: 'WorkSans-Bold' },
   appointmentDoctor: { fontSize: 13, fontFamily: 'WorkSans-Bold', color: '#28a745', marginBottom: 6 },
+  userAvatarSmall: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#ffb495', justifyContent: 'center', alignItems: 'center' },
+  userAvatarTextSmall: { color: '#FFFFFF', fontSize: 16, fontFamily: 'JosefinSans-Bold' },
+  badgePill: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 10, borderWidth: 1, marginRight: 4, gap: 3 },
+  badgeActive: { backgroundColor: '#E8F5E9', borderColor: '#27AE60' },
+  badgeInactive: { backgroundColor: '#F3F4F6', borderColor: '#E5E7EB' },
+  badgeText: { fontSize: 9, fontFamily: 'WorkSans-Medium' },
+  badgeTextActive: { color: '#27AE60', fontFamily: 'WorkSans-Bold' },
+  badgeTextInactive: { color: '#9CA3AF' },
 });

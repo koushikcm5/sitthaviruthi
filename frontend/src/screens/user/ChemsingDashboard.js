@@ -8,7 +8,13 @@ import { authAPI, attendanceAPI, contentAPI, workshopAPI, userAPI, qaAPI, appoin
 
 import { getFontFamily } from '../../styles/fonts';
 import * as ImagePicker from 'expo-image-picker';
-import { API_URL } from '../../../config'; // Ensure API_URL is imported or available
+import { API_URL } from '../../../config';
+import DashboardHeader from '../../components/dashboard/DashboardHeader';
+import ProgressStrip from '../../components/dashboard/ProgressStrip';
+import WelcomeBanner from '../../components/dashboard/WelcomeBanner';
+import QuickActions from '../../components/dashboard/QuickActions';
+import WorkshopList from '../../components/dashboard/WorkshopList';
+import RoutineList from '../../components/dashboard/RoutineList';
 
 export default function ChemsingDashboard({ navigation, route }) {
   const [user, setUser] = useState({ name: '', level: 1, profilePicture: null });
@@ -532,95 +538,25 @@ export default function ChemsingDashboard({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <View style={[styles.header, { paddingTop: getStatusBarHeight() + 16 }]}>
-        <View style={styles.headerLeft}>
-          <View style={styles.avatar}>
-            {user.profilePicture ? (
-              <Image source={{ uri: user.profilePicture }} style={{ width: 40, height: 40, borderRadius: 20 }} />
-            ) : (
-              <Text style={styles.avatarText}>{user.name[0]?.toUpperCase()}</Text>
-            )}
-          </View>
-          <View>
-            <Text style={styles.greeting}>Hello, {user.name}</Text>
-            <View style={[styles.levelPill, { backgroundColor: getLevelColor(user.level) }]}>
-              <Text style={styles.levelText}>Level {user.level}</Text>
-            </View>
-          </View>
-        </View>
-        <View style={{ flexDirection: 'row', gap: 8 }}>
-          <TouchableOpacity style={styles.iconBtn} onPress={() => navigation.navigate('Notifications')}>
-            <MaterialIcons name="notifications" size={28} color="#ffcbb5" />
-            {unreadCount > 0 && (
-              <View style={styles.badge}>
-                <Text style={styles.badgeText}>{unreadCount}</Text>
-              </View>
-            )}
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconBtn} onPress={() => setMenuModal(true)}>
-            <MaterialIcons name="menu" size={28} color="#ffcbb5" />
-          </TouchableOpacity>
-        </View>
-      </View>
+      <DashboardHeader
+        user={user}
+        unreadCount={unreadCount}
+        navigation={navigation}
+        setMenuModal={setMenuModal}
+        getStatusBarHeight={getStatusBarHeight}
+        getLevelColor={getLevelColor}
+      />
 
-      <View style={styles.progressStrip}>
-        <View style={styles.progressBar}>
-          <View style={[styles.progressFill, {
-            width: `${(() => {
-              if (user.level === 1) return Math.min((daysCompleted / 120) * 100, 100);
-              if (user.level === 2) return Math.min(((daysCompleted - 120) / 120) * 100, 100);
-              if (user.level === 3) return Math.min(((daysCompleted - 240) / 120) * 100, 100);
-              return 0;
-            })()}%`
-          }]} />
-        </View>
-        <Text style={styles.progressLabel}>
-          {user.level === 1 && `${daysCompleted}/120 days to Level 2`}
-          {user.level === 2 && `${daysCompleted - 120}/120 days to Level 3`}
-          {user.level === 3 && `${daysCompleted - 240}/120 days - Completed!`}
-        </Text>
-      </View>
+      <ProgressStrip user={user} daysCompleted={daysCompleted} />
 
       <ScrollView style={styles.content} contentContainerStyle={{ paddingBottom: 100 }} showsVerticalScrollIndicator={false}>
         {activeTab === 'levels' && (
           <View>
             {/* Welcome Banner */}
-            <View style={styles.welcomeBanner}>
-              <View style={styles.bannerGradient}>
-                <Text style={styles.bannerTitle}>Welcome to Your Journey</Text>
-                <Text style={styles.bannerSubtitle}>Transform your life</Text>
-                <View style={styles.bannerStats}>
-                  <View style={styles.bannerStatItem}>
-                    <Text style={styles.bannerStatValue}>{daysCompleted}</Text>
-                    <Text style={styles.bannerStatLabel}>Days</Text>
-                  </View>
-                  <View style={styles.bannerDivider} />
-                  <View style={styles.bannerStatItem}>
-                    <Text style={styles.bannerStatValue}>Level {user.level}</Text>
-                    <Text style={styles.bannerStatLabel}>{getLevelName(user.level)}</Text>
-                  </View>
-                </View>
-              </View>
-            </View>
+            <WelcomeBanner daysCompleted={daysCompleted} user={user} getLevelName={getLevelName} />
 
             {/* Quick Actions */}
-            <View style={styles.quickActions}>
-              <TouchableOpacity style={styles.quickActionCard} onPress={() => setActiveTab('routine')}>
-                <View style={styles.quickActionIcon}>
-                  <MaterialIcons name="self-improvement" size={32} color="#ffb495" />
-                </View>
-                <Text style={styles.quickActionTitle}>Daily Routine</Text>
-                <Text style={styles.quickActionDesc}>7 Steps to Wellness</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.quickActionCard} onPress={() => setActiveTab('habits')}>
-                <View style={styles.quickActionIcon}>
-                  <MaterialIcons name="task-alt" size={32} color="#ffb495" />
-                </View>
-                <Text style={styles.quickActionTitle}>Habits</Text>
-                <Text style={styles.quickActionDesc}>Track Progress</Text>
-              </TouchableOpacity>
-            </View>
+            <QuickActions setActiveTab={setActiveTab} />
 
             <TouchableOpacity
               style={styles.shareCard}
@@ -634,46 +570,12 @@ export default function ChemsingDashboard({ navigation, route }) {
             </TouchableOpacity>
 
             {/* Workshops Section */}
-            <View style={styles.luxuryCard}>
-              <View style={styles.luxuryCardHeader}>
-                <MaterialIcons name="event" size={24} color="#ffb495" />
-                <Text style={[styles.cardTitleBold, { marginBottom: 0 }]}>Upcoming Workshops</Text>
-              </View>
-              {selectedLevel && <Text style={styles.workshopSubtitle}>Level {selectedLevel} - {getLevelName(selectedLevel)}</Text>}
-              {Array.isArray(workshops) && workshops.length > 0 ? (
-                workshops.map((workshop) => (
-                  <View key={workshop?.id || Math.random()} style={styles.premiumWorkshopCard}>
-                    <View style={styles.workshopBadgeRow}>
-                      <View style={[styles.levelBadge, { backgroundColor: getLevelColor(workshop?.level || 1) }]}>
-                        <Text style={styles.levelBadgeText}>Level {workshop?.level || 1}</Text>
-                      </View>
-                      <Text style={styles.workshopTime}>
-                        {workshop?.startTime ? new Date(workshop.startTime).toLocaleString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        }) : 'TBD'}
-                      </Text>
-                    </View>
-                    <Text style={styles.premiumWorkshopTitle}>{workshop?.title || 'Workshop'}</Text>
-                    <Text style={styles.workshopDesc}>{workshop?.description || ''}</Text>
-                    <TouchableOpacity
-                      style={styles.premiumJoinBtn}
-                      onPress={() => workshop?.link && Linking.openURL(workshop.link)}>
-                      <MaterialIcons name="open-in-new" size={20} color="#FFF" />
-                      <Text style={styles.joinBtnText}>Join Workshop</Text>
-                    </TouchableOpacity>
-                  </View>
-                ))
-              ) : (
-                <View style={styles.emptyState}>
-                  <MaterialIcons name="event-available" size={48} color="#E5E7EB" />
-                  <Text style={styles.emptyStateText}>No workshops scheduled</Text>
-                  <Text style={styles.emptyStateSubtext}>Check back soon</Text>
-                </View>
-              )}
-            </View>
+            <WorkshopList
+              workshops={workshops}
+              selectedLevel={selectedLevel}
+              getLevelName={getLevelName}
+              getLevelColor={getLevelColor}
+            />
 
 
           </View>
@@ -741,79 +643,11 @@ export default function ChemsingDashboard({ navigation, route }) {
         )}
 
         {activeTab === 'routine' && (
-          <View style={styles.card}>
-            <Text style={styles.cardTitleBold}>Daily Routine (7 Steps)</Text>
-            <Text style={styles.dateText}>{new Date().toLocaleDateString()}</Text>
-
-            {/* Step 1: Chakra Cleansing */}
-            <TouchableOpacity style={styles.stepCard} onPress={() => navigation.navigate('RoutineDetail', { step: 1 })}>
-              <View style={styles.stepHeader}>
-                <Text style={styles.stepNumber}>1</Text>
-                <Text style={styles.stepTitle}>Chakra Cleansing</Text>
-                {completedSteps[1] && <Text style={styles.checkMark}>✓</Text>}
-              </View>
-            </TouchableOpacity>
-
-            {/* Step 2: Forgiveness */}
-            <TouchableOpacity style={styles.stepCard} onPress={() => navigation.navigate('RoutineDetail', { step: 2 })}>
-              <View style={styles.stepHeader}>
-                <Text style={styles.stepNumber}>2</Text>
-                <Text style={styles.stepTitle}>Forgiveness</Text>
-                {completedSteps[2] && <Text style={styles.checkMark}>✓</Text>}
-              </View>
-            </TouchableOpacity>
-
-            {/* Step 3: Awareness */}
-            <TouchableOpacity style={styles.stepCard} onPress={() => navigation.navigate('RoutineDetail', { step: 3 })}>
-              <View style={styles.stepHeader}>
-                <Text style={styles.stepNumber}>3</Text>
-                <Text style={styles.stepTitle}>Awareness</Text>
-                {completedSteps[3] && <Text style={styles.checkMark}>✓</Text>}
-              </View>
-            </TouchableOpacity>
-
-            {/* Step 4: Meditation */}
-            <TouchableOpacity style={styles.stepCard} onPress={() => navigation.navigate('RoutineDetail', { step: 4 })}>
-              <View style={styles.stepHeader}>
-                <Text style={styles.stepNumber}>4</Text>
-                <Text style={styles.stepTitle}>Meditation</Text>
-                {completedSteps[4] && <Text style={styles.checkMark}>✓</Text>}
-              </View>
-            </TouchableOpacity>
-
-            {/* Step 5: Manifestation */}
-            <TouchableOpacity style={styles.stepCard} onPress={() => navigation.navigate('RoutineDetail', { step: 5 })}>
-              <View style={styles.stepHeader}>
-                <Text style={styles.stepNumber}>5</Text>
-                <Text style={styles.stepTitle}>Manifestation</Text>
-                {completedSteps[5] && <Text style={styles.checkMark}>✓</Text>}
-              </View>
-            </TouchableOpacity>
-
-            {/* Step 6: Tharpanam/Thithi */}
-            <TouchableOpacity style={styles.stepCard} onPress={() => navigation.navigate('RoutineDetail', { step: 6 })}>
-              <View style={styles.stepHeader}>
-                <Text style={styles.stepNumber}>6</Text>
-                <Text style={styles.stepTitle}>Tharpanam/Thithi</Text>
-                {completedSteps[6] && <Text style={styles.checkMark}>✓</Text>}
-              </View>
-            </TouchableOpacity>
-
-            {/* Step 7: Healing */}
-            <TouchableOpacity style={styles.stepCard} onPress={() => navigation.navigate('RoutineDetail', { step: 7 })}>
-              <View style={styles.stepHeader}>
-                <Text style={styles.stepNumber}>7</Text>
-                <Text style={styles.stepTitle}>Healing - Self & Family</Text>
-                {completedSteps[7] && <Text style={styles.checkMark}>✓</Text>}
-              </View>
-            </TouchableOpacity>
-
-            {Object.keys(completedSteps).filter(k => parseInt(k) >= 1 && parseInt(k) <= 7).length === 7 && (
-              <TouchableOpacity style={styles.nextBtn} onPress={() => { setRoutineCompleted(true); setRoutineCompleteModal(true); }}>
-                <Text style={styles.nextBtnText}>Complete Daily Routine →</Text>
-              </TouchableOpacity>
-            )}
-          </View>
+          <RoutineList
+            completedSteps={completedSteps}
+            navigation={navigation}
+            onCompleteRoutine={() => { setRoutineCompleted(true); setRoutineCompleteModal(true); }}
+          />
         )}
 
         {activeTab === 'habits' && (
@@ -946,43 +780,14 @@ export default function ChemsingDashboard({ navigation, route }) {
             </View>
 
             {/* Session Workshops */}
-            <View style={styles.card}>
-              <View style={styles.dropdownHeader}>
-                <View style={styles.dropdownTitleRow}>
-                  <MaterialIcons name="event" size={24} color="#ffb495" />
-                  <Text style={[styles.cardTitleBold, { marginBottom: 0 }]}>Session Workshops</Text>
-                </View>
-              </View>
-              <Text style={styles.workshopSubtitle}>Join live sessions and workshops</Text>
-              {Array.isArray(sessionWorkshops) && sessionWorkshops.length > 0 ? (
-                sessionWorkshops.map((workshop) => (
-                  <View key={workshop.id} style={styles.workshopCard}>
-                    <View style={styles.workshopHeader}>
-                      <Text style={styles.workshopTime}>
-                        {new Date(workshop.startTime).toLocaleString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}
-                      </Text>
-                      <View style={[styles.levelBadge, { backgroundColor: getLevelColor(workshop.level) }]}>
-                        <Text style={styles.levelBadgeText}>Level {workshop.level}</Text>
-                      </View>
-                    </View>
-                    <Text style={styles.workshopTitle}>{workshop.title}</Text>
-                    <Text style={styles.workshopDesc}>{workshop.description}</Text>
-                    <TouchableOpacity
-                      style={styles.joinBtn}
-                      onPress={() => Linking.openURL(workshop.link)}>
-                      <Text style={styles.joinBtnText}>Join Workshop →</Text>
-                    </TouchableOpacity>
-                  </View>
-                ))
-              ) : (
-                <Text style={styles.noWorkshops}>No workshops scheduled yet</Text>
-              )}
-            </View>
+            <WorkshopList
+              workshops={sessionWorkshops}
+              selectedLevel={null}
+              getLevelName={getLevelName}
+              getLevelColor={getLevelColor}
+              title="Session Workshops"
+              subtitle="Join live sessions and workshops"
+            />
 
             {/* Q&A Section */}
             <View style={styles.card}>
@@ -1264,7 +1069,6 @@ export default function ChemsingDashboard({ navigation, route }) {
                   setMenuModal(false);
                   setProgressModal(true);
                 } catch (error) {
-                  console.error('Error loading progress:', error);
                   Alert.alert('Error', 'Failed to load progress data');
                 }
               }}>
@@ -1389,16 +1193,11 @@ export default function ChemsingDashboard({ navigation, route }) {
               </View>
 
               <View style={{ alignSelf: 'center', marginBottom: 16, position: 'relative' }}>
-                <TouchableOpacity onPress={pickProfileImage} onLongPress={() => {
-                  if (user.profilePicture) {
-                    Alert.alert('Debug URL', user.profilePicture);
-                  }
-                }}>
+                <TouchableOpacity onPress={pickProfileImage}>
                   {user.profilePicture ? (
                     <Image
                       source={{ uri: user.profilePicture }}
                       style={{ width: 80, height: 80, borderRadius: 40 }}
-                      onError={(e) => console.log('Image Load Error:', e.nativeEvent.error)}
                     />
                   ) : (
                     <View style={{ width: 80, height: 80, borderRadius: 40, backgroundColor: '#00A8A8', justifyContent: 'center', alignItems: 'center' }}>
@@ -2056,10 +1855,10 @@ const styles = StyleSheet.create({
   luxuryCard: { backgroundColor: '#FFFFFF', borderRadius: 16, padding: 12, marginBottom: 12, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 8, elevation: 4 },
   luxuryCardHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
   luxuryCardTitle: { fontFamily: 'JosefinSans-Bold', fontSize: 18, color: '#063159', letterSpacing: 0.2 },
-  premiumWorkshopCard: { backgroundColor: '#F8FAFC', borderRadius: 12, padding: 12, marginBottom: 10, borderWidth: 1, borderColor: '#E5E7EB', shadowColor: '#00A8A8', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.06, shadowRadius: 4, elevation: 2 },
+  premiumWorkshopCard: { backgroundColor: '#F8FAFC', borderRadius: 12, padding: 12, marginBottom: 10, borderWidth: 1, borderColor: '#E5E7EB', shadowColor: '#b37e68', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.06, shadowRadius: 4, elevation: 2 },
   workshopBadgeRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
   premiumWorkshopTitle: { fontSize: 14, color: '#1B3B6F', marginBottom: 6, letterSpacing: 0.1, fontFamily: headingBold },
-  premiumJoinBtn: { backgroundColor: '#063159', padding: 10, borderRadius: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, shadowColor: '#00A8A8', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 2 },
+  premiumJoinBtn: { backgroundColor: '#063159', padding: 10, borderRadius: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, shadowColor: '#b37e68', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 2 },
   emptyState: { alignItems: 'center', paddingVertical: 20 },
   emptyStateText: { fontSize: 14, color: '#6B7280', marginTop: 8, marginBottom: 2, fontFamily: headingBold },
   emptyStateSubtext: { fontSize: 12, color: '#9CA3AF', fontFamily: bodyRegular },
