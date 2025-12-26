@@ -637,7 +637,7 @@ export default function ChemsingDashboard({ navigation, route }) {
             <View style={styles.luxuryCard}>
               <View style={styles.luxuryCardHeader}>
                 <MaterialIcons name="event" size={24} color="#ffb495" />
-                <Text style={styles.luxuryCardTitle}>Upcoming Workshops</Text>
+                <Text style={[styles.cardTitleBold, { marginBottom: 0 }]}>Upcoming Workshops</Text>
               </View>
               {selectedLevel && <Text style={styles.workshopSubtitle}>Level {selectedLevel} - {getLevelName(selectedLevel)}</Text>}
               {Array.isArray(workshops) && workshops.length > 0 ? (
@@ -706,7 +706,7 @@ export default function ChemsingDashboard({ navigation, route }) {
 
             {/* Workshops Section */}
             <View style={styles.card}>
-              <Text style={styles.cardTitle}>Upcoming Workshops</Text>
+              <Text style={styles.cardTitleBold}>Upcoming Workshops</Text>
               <Text style={styles.workshopSubtitle}>Level {selectedLevel} - {getLevelName(selectedLevel)}</Text>
               {Array.isArray(workshops) && workshops.length > 0 ? (
                 workshops.map((workshop) => (
@@ -742,7 +742,7 @@ export default function ChemsingDashboard({ navigation, route }) {
 
         {activeTab === 'routine' && (
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>Daily Routine (7 Steps)</Text>
+            <Text style={styles.cardTitleBold}>Daily Routine (7 Steps)</Text>
             <Text style={styles.dateText}>{new Date().toLocaleDateString()}</Text>
 
             {/* Step 1: Chakra Cleansing */}
@@ -819,7 +819,7 @@ export default function ChemsingDashboard({ navigation, route }) {
         {activeTab === 'habits' && (
           <View>
             <View style={styles.card}>
-              <Text style={styles.cardTitle}>Habit Tracker</Text>
+              <Text style={styles.cardTitleBold}>Habit Tracker</Text>
               <Text style={styles.habitSubtitle}>Complete your daily habits</Text>
               {Array.isArray(habits) && habits.length > 0 ? habits.map((habit) => (
                 <View key={habit?.id || Math.random()} style={styles.habitItem}>
@@ -878,7 +878,7 @@ export default function ChemsingDashboard({ navigation, route }) {
                 onPress={() => setShowAppointments(!showAppointments)}>
                 <View style={styles.dropdownTitleRow}>
                   <MaterialIcons name="event" size={24} color="#ffb495" />
-                  <Text style={styles.cardTitle}>Appointments ({Array.isArray(appointments) ? appointments.length : 0})</Text>
+                  <Text style={styles.cardTitleBold}>Appointments ({Array.isArray(appointments) ? appointments.length : 0})</Text>
                 </View>
                 <MaterialIcons name={showAppointments ? "expand-less" : "expand-more"} size={24} color="#666" />
               </TouchableOpacity>
@@ -892,41 +892,42 @@ export default function ChemsingDashboard({ navigation, route }) {
                       <TouchableOpacity
                         key={apt.id}
                         style={[
-                          styles.workshopCard,
-                          { borderColor: apt.status === 'APPROVED' ? '#28a745' : apt.status === 'REJECTED' ? '#E74C3C' : '#ffc107' }
+                          styles.qaCard,
+                          { borderLeftColor: apt.status === 'APPROVED' ? '#28a745' : apt.status === 'REJECTED' ? '#E74C3C' : '#ffc107' }
                         ]}
                         onPress={() => setExpandedAppointment(expandedAppointment === apt.id ? null : apt.id)}>
-                        <View style={styles.workshopHeader}>
-                          {apt.scheduledDate && apt.status === 'APPROVED' && (
-                            <Text style={styles.workshopTime}>
-                              {new Date(apt.scheduledDate).toLocaleString('en-US', {
-                                month: 'short',
-                                day: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
-                              })}
-                            </Text>
-                          )}
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
+                          <Text style={styles.qaCardLabel}>Request:</Text>
                           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                             <View style={[
-                              styles.levelBadge,
+                              styles.qaBadge,
                               { backgroundColor: apt.status === 'APPROVED' ? '#28a745' : apt.status === 'REJECTED' ? '#dc3545' : '#ffc107' }
                             ]}>
-                              <Text style={styles.levelBadgeText}>{apt.status}</Text>
+                              <Text style={styles.qaBadgeText}>{apt.status}</Text>
                             </View>
                             <MaterialIcons name={expandedAppointment === apt.id ? "expand-less" : "expand-more"} size={24} color="#666" />
                           </View>
                         </View>
                         {expandedAppointment === apt.id ? (
                           <View style={styles.expandedContent}>
-                            <Text style={styles.workshopTitle}>Appointment Request</Text>
-                            <Text style={styles.workshopDesc}>{apt.reason}</Text>
+                            <Text style={styles.appointmentTitle}>{apt.reason}</Text>
+                            <Text style={styles.qaCardDate}>
+                              Requested: {new Date(apt.requestedDate).toLocaleDateString()}
+                            </Text>
+                            {apt.scheduledDate && apt.status === 'APPROVED' && (
+                              <Text style={[styles.qaCardDate, { color: '#00A8A8', fontWeight: 'bold' }]}>
+                                Scheduled: {new Date(apt.scheduledDate).toLocaleString()}
+                              </Text>
+                            )}
                             {apt.adminNotes && (
-                              <Text style={[styles.workshopDesc, { fontStyle: 'italic', color: '#00A8A8' }]}>Note: {apt.adminNotes}</Text>
+                              <View style={styles.qaAnswerBox}>
+                                <Text style={styles.qaAnswerLabel}>Admin Note:</Text>
+                                <Text style={styles.qaAnswerText}>{apt.adminNotes}</Text>
+                              </View>
                             )}
                           </View>
                         ) : (
-                          <Text style={styles.workshopTitle}>Appointment Request</Text>
+                          <Text style={styles.appointmentTitle} numberOfLines={1}>{apt.reason}</Text>
                         )}
                       </TouchableOpacity>
                     ))
@@ -946,7 +947,12 @@ export default function ChemsingDashboard({ navigation, route }) {
 
             {/* Session Workshops */}
             <View style={styles.card}>
-              <Text style={styles.cardTitle}>Session Workshops</Text>
+              <View style={styles.dropdownHeader}>
+                <View style={styles.dropdownTitleRow}>
+                  <MaterialIcons name="event" size={24} color="#ffb495" />
+                  <Text style={[styles.cardTitleBold, { marginBottom: 0 }]}>Session Workshops</Text>
+                </View>
+              </View>
               <Text style={styles.workshopSubtitle}>Join live sessions and workshops</Text>
               {Array.isArray(sessionWorkshops) && sessionWorkshops.length > 0 ? (
                 sessionWorkshops.map((workshop) => (
@@ -985,7 +991,7 @@ export default function ChemsingDashboard({ navigation, route }) {
                 onPress={() => setShowQA(!showQA)}>
                 <View style={styles.dropdownTitleRow}>
                   <MaterialIcons name="question-answer" size={24} color="#ffb495" />
-                  <Text style={styles.cardTitle}>Questions & Answers ({Array.isArray(qaList) ? qaList.length : 0})</Text>
+                  <Text style={styles.cardTitleBold}>Questions & Answers ({Array.isArray(qaList) ? qaList.length : 0})</Text>
                 </View>
                 <MaterialIcons name={showQA ? "expand-less" : "expand-more"} size={24} color="#666" />
               </TouchableOpacity>
@@ -1052,7 +1058,7 @@ export default function ChemsingDashboard({ navigation, route }) {
 
             {/* FAQ Section */}
             <View style={styles.card}>
-              <Text style={styles.cardTitle}>FAQ</Text>
+              <Text style={styles.cardTitleBold}>FAQ</Text>
               <Text style={styles.habitSubtitle}>Frequently Asked Questions</Text>
 
               <View style={styles.faqItem}>
@@ -1840,6 +1846,7 @@ const styles = StyleSheet.create({
   levelDuration: { fontSize: 14, color: '#666', fontFamily: bodyRegular },
   card: { backgroundColor: '#FFFFFF', borderRadius: 16, padding: 16, marginBottom: 16, shadowColor: '#b37e68', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 8, elevation: 3 },
   cardTitle: { fontSize: 17, color: '#04223e', marginBottom: 12, fontFamily: bodyRegular },
+  cardTitleBold: { fontSize: 17, color: '#063159', marginBottom: 12, fontFamily: 'JosefinSans-Bold' },
   dateText: { fontSize: 12, color: '#66483c', marginBottom: 12, fontFamily: bodyRegular },
   videoTile: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 12, backgroundColor: '#F6F7FB', borderRadius: 12, marginBottom: 12 },
   videoThumb: { width: 60, height: 60, backgroundColor: '#1B3B6F', borderRadius: 8, justifyContent: 'center', alignItems: 'center' },
@@ -1917,6 +1924,7 @@ const styles = StyleSheet.create({
   workshopHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
   workshopTime: { fontSize: 11, color: '#00A8A8', fontFamily: headingBold },
   workshopTitle: { fontSize: 14, color: '#1B3B6F', marginBottom: 4, fontFamily: headingBold },
+  appointmentTitle: { fontSize: 14, color: '#1B3B6F', marginBottom: 4, fontFamily: 'WorkSans-Regular' },
   workshopDesc: { fontSize: 11, color: '#666', marginBottom: 6, fontFamily: bodyRegular },
   joinBtn: { backgroundColor: '#00A8A8', padding: 10, borderRadius: 8 },
   joinBtnText: { color: '#fff', fontSize: 13, textAlign: 'center', fontFamily: headingBold },
@@ -2013,7 +2021,7 @@ const styles = StyleSheet.create({
   qaCardLabel: { fontSize: 12, color: '#6B7280', textTransform: 'uppercase', fontFamily: headingBold },
   qaBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12 },
   qaBadgeText: { color: '#FFF', fontSize: 12, fontFamily: headingBold },
-  qaCardQuestion: { fontSize: 14, color: '#1B3B6F', marginBottom: 8, fontFamily: headingBold },
+  qaCardQuestion: { fontSize: 14, color: '#1B3B6F', marginBottom: 8, fontFamily: 'WorkSans-Regular' },
   qaCardDate: { fontSize: 12, color: '#6B7280', marginBottom: 8, fontFamily: bodyRegular },
   qaAnswerBox: { backgroundColor: '#E8F5E9', padding: 12, borderRadius: 8, marginTop: 8 },
   qaAnswerLabel: { fontSize: 12, color: '#10B981', marginBottom: 6, fontFamily: headingBold },
@@ -2047,7 +2055,7 @@ const styles = StyleSheet.create({
   shareCardDesc: { fontFamily: 'WorkSans-Regular', fontSize: 11, color: '#516f8b' },
   luxuryCard: { backgroundColor: '#FFFFFF', borderRadius: 16, padding: 12, marginBottom: 12, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 8, elevation: 4 },
   luxuryCardHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
-  luxuryCardTitle: { fontFamily: 'JosefinSans-Bold', fontSize: 18, color: '#1B3B6F', letterSpacing: 0.2 },
+  luxuryCardTitle: { fontFamily: 'JosefinSans-Bold', fontSize: 18, color: '#063159', letterSpacing: 0.2 },
   premiumWorkshopCard: { backgroundColor: '#F8FAFC', borderRadius: 12, padding: 12, marginBottom: 10, borderWidth: 1, borderColor: '#E5E7EB', shadowColor: '#00A8A8', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.06, shadowRadius: 4, elevation: 2 },
   workshopBadgeRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
   premiumWorkshopTitle: { fontSize: 14, color: '#1B3B6F', marginBottom: 6, letterSpacing: 0.1, fontFamily: headingBold },
