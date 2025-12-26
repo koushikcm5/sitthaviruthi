@@ -652,56 +652,68 @@ Tips:
       title: { english: 'Manifestation', tamil: 'வெளிப்பாடு' },
       icon: 'stars',
       content: {
-        english: `Manifestation is the practice of bringing your desires into reality through focused intention.
+        english: `Manifestation Prayer   ( Short form of Adi Shankara’ s Nirvana Shatakam ) 
+   
+Time : ( 9 am / 12 pm / 4 pm / 9 pm )
+ 
+1.Body position: Spinal cord should be straight, right palm on top of left palm and thumbs touching.
+2.Rotate your shoulder back to front three times.
+3 .Take a deep single breath. 
 
-✨ How to Manifest:
+➢ 3 times Om Kara
 
-1. Sit comfortably and relax
-2. Close your eyes and breathe deeply
-3. Visualize your goal clearly
-4. Feel the emotions of achieving it
-5. Believe it's already yours
-6. Express gratitude
-7. Release and trust the universe
+➢ Say the manifestation prayer “I am not the mind, I am not the body, I am not the the five elements, I am the true identity of the blissful form of Shivam “.( 3 times ) 
 
-🎯 Manifestation Steps:
+➢ Now bless yourself (Imagine yourself filled with peace, love and Joy  till the next manifestation time. 
 
-Step 1: Get Clear
-- Know exactly what you want
-- Be specific and detailed
-- Write it down
+➢ Then see your hands both and then cover both your eyeswith your hands and keep your hands (right on top of left) on the top of your head (Chakra 7) and then keep them on your heart and move them all the way down to your feet.
 
-Step 2: Visualize
-- See it in your mind's eye
-- Make it vivid and real
-- Include all senses
+ Watch the manifestation video for guided practice.
 
-Step 3: Feel It
-- Feel the joy of having it
-- Experience the emotions
-- Live in that feeling
+Remember: What you focus on expands!`,
+        tamil: `வெளிப்பாடு பிரார்த்தனை (ஆதி சங்கரரின் நிர்வாண ஷட்கத்தின் சுருக்க வடிவம்)
 
-Step 4: Believe
-- Trust it will happen
-- Remove all doubts
-- Have faith
+நேரம்: காலை 9 மணி / மதியம் 12 மணி / மாலை 4 மணி / இரவு 9 மணி
 
-Step 5: Take Action
-- Follow inspired actions
-- Stay open to opportunities
-- Work towards your goal
+செய்யும் முறை
 
-⏰ Practice Times:
-Four times daily:
-- 9:00 AM
-- 12:00 PM
-- 4:00 PM
-- 9:00 PM
+உடல் நிலை:
+முதுகெலும்பு நேராக இருக்க வேண்டும்.
+இடது கை மீது வலது கை வைத்துக் கொண்டு, இரு கைவிரல்களின் (அங்கூடுகள்) முனைகள் ஒன்றோடொன்று தொடும் படி அமரவும்.
 
-🎥 Watch the manifestation video for guided practice.
+தோள்சுழற்சி:
+தோள்களை பின்புறம் இருந்து முன்புறம் நோக்கி 3 முறை மெதுவாக சுழற்றவும்.
 
-💫 Remember: What you focus on expands!`,
-        tamil: `[Tamil content for Manifestation - You will update this]`
+மூச்சு:
+ஒரு ஆழமான மூச்சை ஒரே முறையாக உள்ளே இழுத்து வெளியே விடவும்.
+
+ஜபம்
+
+➢ ஓம் காரம் – 3 முறை
+
+➢ மாநிபெஸ்டேஷன் பிரார்த்தனை – 3 முறை
+“நான் மனம் அல்ல,
+நான் உடல் அல்ல,
+நான் ஐந்து பஞ்சபூதங்களும் அல்ல,
+நான் ஆனந்த ரூபமான சிவத்தின்
+உண்மையான அடையாளம்.”
+
+ஆசீர்வாதம் (Self Blessing)
+
+➢ அடுத்த மாநிபெஸ்டேஷன் நேரம் வரை,
+நீங்கள் அமைதி, அன்பு, மகிழ்ச்சி ஆகியவற்றால் நிரம்பியிருப்பதாக மனதில் கற்பனை செய்து, உங்களை நீங்களே ஆசீர்வதிக்கவும்.
+
+சக்தி இயக்கம்
+
+➢ உங்கள் இரு கைகளையும் பாருங்கள்.
+➢ பின்னர், இரு கைகளாலும் கண்களை மெதுவாக மூடுங்கள்.
+➢ அதன்பின், வலது கை மேல், இடது கை கீழ் என வைத்து,
+
+தலை உச்சியில் (7வது சக்ரா) வைக்கவும்
+
+இதயத்தில் வைக்கவும்
+
+அங்கிருந்து மெதுவாக கால்கள் வரை கைகளை நகர்த்தவும்.`
       }
     },
     6: {
