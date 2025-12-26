@@ -1651,7 +1651,7 @@ export default function ChemsingDashboard({ navigation, route }) {
                   <Text style={styles.pickerLabel}>Reason for Appointment</Text>
                   <TextInput
                     style={styles.reasonTextInput}
-                    placeholder="Describe your concern.."
+                    placeholder="Describe your concern..."
                     placeholderTextColor="#9CA3AF"
                     multiline
                     numberOfLines={4}
