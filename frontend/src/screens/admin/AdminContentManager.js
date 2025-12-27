@@ -306,7 +306,7 @@ export default function AdminContentManager({ navigation, route }) {
 
         <TextInput
           style={styles.input}
-          placeholder="Video URL (YouTube, Vimeo, etc.)"
+          placeholder="Video Url..."
           placeholderTextColor="#8E8E93"
           value={videoForm.url}
           onChangeText={(text) => setVideoForm({ ...videoForm, url: text })}
