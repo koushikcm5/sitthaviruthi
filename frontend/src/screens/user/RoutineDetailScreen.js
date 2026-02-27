@@ -1394,8 +1394,10 @@ const styles = StyleSheet.create({
   },
   levelVideosDesc: {
     fontSize: 14,
-    color: '#516f8b',
-    marginBottom: 20
+    color: '#6B7280', // Slightly softer gray for "neatness"
+    marginBottom: 20,
+    fontFamily: bodyRegular,
+    letterSpacing: 0.3,
   },
   levelCard: {
     backgroundColor: '#FFFFFF',

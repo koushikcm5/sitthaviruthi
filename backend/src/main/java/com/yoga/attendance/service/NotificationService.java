@@ -25,7 +25,7 @@ public class NotificationService {
                 System.err.println("Cannot send notification: username is null or empty");
                 return;
             }
-            
+
             // Save to database
             Notification notification = new Notification();
             notification.setUsername(username);
@@ -56,13 +56,13 @@ public class NotificationService {
 
         allUsers.forEach(user -> {
             System.out.println("Checking user: " + user.getUsername() + ", Role: " + user.getRole());
-            // Case-insensitive check to handle ADMIN, Admin, admin, etc.
+            // Only send to regular users (exclude ADMIN and SUPER_ADMIN)
             String roleStr = user.getRole() != null ? user.getRole().name() : null;
-            if (roleStr == null || !"ADMIN".equalsIgnoreCase(roleStr)) {
+            if (roleStr != null && !"ADMIN".equalsIgnoreCase(roleStr) && !"SUPER_ADMIN".equalsIgnoreCase(roleStr)) {
                 System.out.println("✓ Sending notification to user: " + user.getUsername());
                 sendToUser(user.getUsername(), title, message, type);
             } else {
-                System.out.println("✗ Skipping admin user: " + user.getUsername());
+                System.out.println("✗ Skipping admin/super_admin user: " + user.getUsername());
             }
         });
         System.out.println("=== sendToAllUsers completed ===");
@@ -80,9 +80,9 @@ public class NotificationService {
 
         allUsers.forEach(user -> {
             System.out.println("Checking user: " + user.getUsername() + ", Role: " + user.getRole());
-            // Case-insensitive check to handle ADMIN, Admin, admin, etc.
+            // Send to both ADMIN and SUPER_ADMIN
             String roleStr = user.getRole() != null ? user.getRole().name() : null;
-            if (roleStr != null && "ADMIN".equalsIgnoreCase(roleStr)) {
+            if (roleStr != null && ("ADMIN".equalsIgnoreCase(roleStr) || "SUPER_ADMIN".equalsIgnoreCase(roleStr))) {
                 System.out.println("✓ Sending notification to admin: " + user.getUsername());
                 sendToUser(user.getUsername(), title, message, type);
             }
@@ -126,12 +126,12 @@ public class NotificationService {
             System.out.println("Marking all notifications as read for user: " + username);
             List<Notification> notifications = notificationRepository
                     .findByUsernameAndReadFalseOrderByCreatedAtDesc(username);
-            
+
             if (notifications.isEmpty()) {
                 System.out.println("No unread notifications found for user: " + username);
                 return;
             }
-            
+
             notifications.forEach(notification -> {
                 notification.setRead(true);
                 notificationRepository.save(notification);
@@ -150,7 +150,7 @@ public class NotificationService {
                 System.err.println("Cannot save device token: username or token is null");
                 return;
             }
-            
+
             DeviceToken deviceToken = deviceTokenRepository
                     .findByUsernameAndToken(username, token)
                     .orElse(new DeviceToken());
@@ -204,9 +204,9 @@ public class NotificationService {
         try {
             List<Notification> allNotifications = notificationRepository.findAll();
             for (Notification notification : allNotifications) {
-                if ("REMINDER".equals(notification.getType()) && 
-                    (notification.getTitle().contains("Attendance Reminder") || 
-                     notification.getTitle().contains("Mark Your Attendance"))) {
+                if ("REMINDER".equals(notification.getType()) &&
+                        (notification.getTitle().contains("Attendance Reminder") ||
+                                notification.getTitle().contains("Mark Your Attendance"))) {
                     notificationRepository.delete(notification);
                 }
             }

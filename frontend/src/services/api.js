@@ -294,6 +294,18 @@ export const authAPI = {
     const data = await parseResponse(response);
     if (!response.ok) throw new Error(data.error || 'Failed to update profile picture');
     return data;
+  },
+
+  createAdmin: async (adminData) => {
+    const headers = await getAuthHeaders();
+    const response = await fetchWithAuth(`${BASE_URL}/auth/create-admin`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(adminData)
+    });
+    const data = await parseResponse(response);
+    if (!response.ok) throw new Error(data.error || 'Failed to create admin');
+    return data;
   }
 };
 
@@ -882,3 +894,67 @@ export const adminAPI = {
     }
   }
 };
+
+export const doctorAPI = {
+  getActiveDoctors: async () => {
+    try {
+      const headers = await getAuthHeaders();
+      const response = await fetchWithAuth(`${BASE_URL}/doctors/active`, { headers });
+      const data = await parseResponse(response);
+      if (!response.ok) throw new Error(data.error || 'Failed to fetch doctors');
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.error('Error fetching doctors:', error);
+      return [];
+    }
+  },
+
+  getAllDoctors: async () => {
+    try {
+      const headers = await getAuthHeaders();
+      const response = await fetchWithAuth(`${BASE_URL}/doctors/all`, { headers });
+      const data = await parseResponse(response);
+      if (!response.ok) throw new Error(data.error || 'Failed to fetch doctors');
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.error('Error fetching all doctors:', error);
+      return [];
+    }
+  },
+
+  addDoctor: async (name, designation) => {
+    const headers = await getAuthHeaders();
+    const response = await fetchWithAuth(`${BASE_URL}/doctors/add`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ name, designation })
+    });
+    const data = await parseResponse(response);
+    if (!response.ok) throw new Error(data.error || 'Failed to add doctor');
+    return data;
+  },
+
+  updateDoctor: async (id, name, designation) => {
+    const headers = await getAuthHeaders();
+    const response = await fetchWithAuth(`${BASE_URL}/doctors/update/${id}`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({ name, designation })
+    });
+    const data = await parseResponse(response);
+    if (!response.ok) throw new Error(data.error || 'Failed to update doctor');
+    return data;
+  },
+
+  deleteDoctor: async (id) => {
+    const headers = await getAuthHeaders();
+    const response = await fetchWithAuth(`${BASE_URL}/doctors/delete/${id}`, {
+      method: 'DELETE',
+      headers
+    });
+    const data = await parseResponse(response);
+    if (!response.ok) throw new Error(data.error || 'Failed to delete doctor');
+    return data;
+  }
+};
+

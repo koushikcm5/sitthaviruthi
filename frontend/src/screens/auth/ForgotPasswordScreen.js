@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ActivityIndicator, Modal, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ActivityIndicator, Modal, Image, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { authAPI } from '../../services/api';
 
@@ -37,66 +38,65 @@ export default function ForgotPasswordScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <Image source={require('../../../assets/img/Frame-1.png')} style={styles.bottomFrame} resizeMode="cover" pointerEvents="none" />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.keyboardView}>
-        <View style={styles.headerSection}>
-          <View style={styles.mandalaPattern} />
-          <Image source={require('../../../assets/SVY-Logo-01.png')} style={styles.logo} />
-        </View>
-
-        <View style={styles.formSection}>
-          <Text style={styles.welcomeTitle}>Reset Password</Text>
-          <Text style={styles.subtitle}>Find Your Way Back</Text>
-          <Text style={styles.supportText}>We'll send you an OTP to reset your password</Text>
-
-          <View style={styles.inputWrapper}>
-            <MaterialIcons name="email" size={20} color="#6B7280" style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              placeholder="Email Address"
-              placeholderTextColor="#9CA3AF"
-              value={email}
-              onChangeText={setEmail}
-              autoCapitalize="none"
-              keyboardType="email-address"
-            />
+        <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+          <View style={styles.headerSection}>
+            <Image source={require('../../../assets/img/Frame-1.png')} style={styles.topFrame} resizeMode="cover" pointerEvents="none" />
+            <Image source={require('../../../assets/SVY-Logo-01.png')} style={styles.logo} />
           </View>
 
-          <TouchableOpacity style={styles.signInBtn} onPress={handleSendOTP} disabled={loading}>
-            {loading ? (
-              <ActivityIndicator color="#FFFFFF" />
-            ) : (
-              <>
-                <Text style={styles.signInText}>Send OTP</Text>
-                <View style={styles.signInIconCircle}>
-                  <MaterialIcons name="arrow-forward" size={18} color="#003057" />
-                </View>
-              </>
-            )}
-          </TouchableOpacity>
+          <View style={styles.formSection}>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.backButton}>
+              <MaterialIcons name="arrow-back" size={24} color="#003057" />
+              <Text style={styles.backText}>Back to Login</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('Login')}>
-            <MaterialIcons name="arrow-back" size={18} color="#6B7280" />
-            <Text style={styles.backText}>Back to Login</Text>
-          </TouchableOpacity>
+            <Text style={styles.welcomeTitle}>Reset Password</Text>
+            <Text style={styles.subtitle}>Find Your Way Back</Text>
+            <Text style={styles.supportText}>We'll send you an OTP to reset your password</Text>
 
-          <View style={styles.bottomMandala} />
-        </View>
+            <View style={styles.inputWrapper}>
+              <MaterialIcons name="email" size={20} color="#6B7280" style={styles.inputIcon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Email Address"
+                placeholderTextColor="#A0AEC0"
+                value={email}
+                onChangeText={setEmail}
+                autoCapitalize="none"
+                keyboardType="email-address"
+              />
+            </View>
+
+            <TouchableOpacity style={styles.signInBtn} onPress={handleSendOTP} disabled={loading} activeOpacity={0.85}>
+              {loading ? (
+                <ActivityIndicator color="#FFFFFF" />
+              ) : (
+                <>
+                  <Text style={styles.signInText}>Send OTP</Text>
+                  <View style={styles.signInIconCircle}>
+                    <MaterialIcons name="arrow-forward" size={18} color="#003057" />
+                  </View>
+                </>
+              )}
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
 
       {/* Success Modal */}
       {successModal && (
         <Modal visible={true} transparent animationType="fade">
           <View style={styles.modalOverlay}>
-            <View style={styles.successModalContent}>
-              <View style={styles.successIconCircle}>
-                <MaterialIcons name="check" size={40} color="#FFFFFF" />
-              </View>
+            <View style={styles.modalContent}>
+              <MaterialIcons name="check-circle" size={64} color="#10B981" style={{ alignSelf: 'center', marginBottom: 16 }} />
               <Text style={styles.modalTitle}>OTP Sent Successfully!</Text>
               <Text style={styles.modalDesc}>
                 We've sent a 6-digit OTP to your email address. Please check your inbox (and spam folder).
               </Text>
-              <TouchableOpacity style={styles.modalBtn} onPress={handleSuccessClose}>
+              <TouchableOpacity style={[styles.modalBtn, { backgroundColor: '#003057' }]} onPress={handleSuccessClose}>
                 <Text style={styles.modalBtnText}>Continue</Text>
               </TouchableOpacity>
             </View>
@@ -108,94 +108,123 @@ export default function ForgotPasswordScreen({ navigation }) {
       {errorModal && (
         <Modal visible={true} transparent animationType="fade">
           <View style={styles.modalOverlay}>
-            <View style={styles.errorModalContent}>
-              <View style={styles.errorIconCircle}>
-                <MaterialIcons name="error" size={40} color="#FFFFFF" />
-              </View>
+            <View style={styles.modalContent}>
+              <MaterialIcons name="error" size={64} color="#EF4444" style={{ alignSelf: 'center', marginBottom: 16 }} />
               <Text style={styles.modalTitle}>Unable to Send OTP</Text>
               <Text style={styles.modalDesc}>{errorModal}</Text>
-              <TouchableOpacity style={styles.errorModalBtn} onPress={() => setErrorModal(null)}>
+              <TouchableOpacity style={styles.modalBtn} onPress={() => setErrorModal(null)}>
                 <Text style={styles.modalBtnText}>Try Again</Text>
               </TouchableOpacity>
             </View>
           </View>
         </Modal>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#fff',
   },
   keyboardView: {
     flex: 1,
   },
+  scrollContent: {
+    flexGrow: 1,
+  },
   headerSection: {
-    backgroundColor: '#1B3B6F',
+    backgroundColor: '#003057',
     paddingTop: 60,
     paddingBottom: 40,
     alignItems: 'center',
     position: 'relative',
     overflow: 'hidden',
-  },
-  mandalaPattern: {
-    position: 'absolute',
-    top: -50,
-    right: -50,
-    width: 200,
     height: 200,
-    borderRadius: 100,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
-    borderStyle: 'dashed',
+  },
+  topFrame: {
+    position: 'absolute',
+    top: -10,
+    left: 50,
+    right: 0,
+    width: '70%',
+    height: '100%',
+    opacity: 100,
+    zIndex: 1,
+    tintColor: '#ffffffff',
   },
   logo: {
-    width: 140,
-    height: 140,
+    width: 200,
+    height: 110,
     resizeMode: 'contain',
+    zIndex: 2,
   },
   formSection: {
     flex: 1,
-    backgroundColor: '#FAFBFC',
+    backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
-    marginTop: -20,
-    paddingHorizontal: 28,
-    paddingTop: 36,
-    paddingBottom: 40,
+    marginTop: -30,
+    paddingHorizontal: 24,
+    paddingTop: 30,
+    paddingBottom: 60,
+    position: 'relative',
+    zIndex: 2,
+  },
+  bottomFrame: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: '100%',
+    height: 100,
+    opacity: 0.90,
+    zIndex: 0,
+    transform: [{ rotate: '180deg' }],
+    tintColor: '#2b6230ff',
+  },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  backText: {
+    fontSize: 14,
+    fontFamily: 'WorkSans-Medium',
+    color: '#003057',
+    marginLeft: 8,
   },
   welcomeTitle: {
-    fontSize: 24,
+    fontSize: 22,
     fontFamily: 'JosefinSans-Bold',
-    color: '#1B3B6F',
+    color: '#010a1bff',
     textAlign: 'center',
     marginBottom: 8,
     letterSpacing: 0.3,
   },
   subtitle: {
-    fontSize: 15,
+    fontSize: 14,
     fontFamily: 'JosefinSans-Bold',
-    color: '#E8B490',
+    color: '#244484ff',
     textAlign: 'center',
-    marginBottom: 6,
+    marginBottom: 4,
   },
   supportText: {
     fontSize: 13,
     fontFamily: 'WorkSans-Regular',
     color: '#6B7280',
     textAlign: 'center',
-    marginBottom: 32,
+    marginBottom: 30,
+    paddingHorizontal: 20,
   },
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    paddingHorizontal: 16,
-    marginBottom: 24,
+    borderRadius: 14,
+    paddingHorizontal: 14,
+    marginBottom: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
@@ -209,10 +238,10 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    paddingVertical: 16,
-    fontSize: 15,
+    paddingVertical: 14,
+    fontSize: 14,
     fontFamily: 'WorkSans-Medium',
-    color: '#1B3B6F',
+    color: '#1A2B4C',
   },
   signInBtn: {
     backgroundColor: '#003057',
@@ -228,6 +257,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.12,
     shadowRadius: 18,
     elevation: 6,
+    marginTop: 10,
   },
   signInText: {
     color: '#FFFFFF',
@@ -252,101 +282,42 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 4,
   },
-  backButton: {
-    marginTop: 28,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 6,
-  },
-  backText: {
-    color: '#4A6984',
-    fontSize: 14,
-    fontFamily: 'WorkSans-Medium',
-    textDecorationLine: 'underline',
-  },
-  bottomMandala: {
-    position: 'absolute',
-    bottom: 20,
-    alignSelf: 'center',
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    borderWidth: 1,
-    borderColor: 'rgba(212,165,116,0.2)',
-    borderStyle: 'dashed',
-  },
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.7)',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  successModalContent: {
+  modalContent: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 24,
+    borderRadius: 20,
     padding: 32,
     width: '85%',
-    alignItems: 'center',
-  },
-  errorModalContent: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 24,
-    padding: 32,
-    width: '85%',
-    alignItems: 'center',
-  },
-  successIconCircle: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: '#10B981',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  errorIconCircle: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: '#EF4444',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
+    maxWidth: 400,
   },
   modalTitle: {
-    fontSize: 20,
-    fontFamily: 'JosefinSans-Bold',
+    fontSize: 22,
+    fontWeight: '800',
     color: '#1B3B6F',
-    marginBottom: 16,
+    marginBottom: 12,
     textAlign: 'center',
   },
   modalDesc: {
     fontSize: 15,
-    fontFamily: 'WorkSans-Regular',
     color: '#6B7280',
     marginBottom: 24,
     textAlign: 'center',
     lineHeight: 22,
   },
   modalBtn: {
-    backgroundColor: '#00A8A8',
+    backgroundColor: '#003057',
     paddingVertical: 14,
-    paddingHorizontal: 32,
     borderRadius: 12,
-    width: '100%',
-  },
-  errorModalBtn: {
-    backgroundColor: '#EF4444',
-    paddingVertical: 14,
-    paddingHorizontal: 32,
-    borderRadius: 12,
-    width: '100%',
   },
   modalBtnText: {
     color: '#FFFFFF',
     fontSize: 16,
-    fontFamily: 'JosefinSans-Bold',
+    fontWeight: '700',
     textAlign: 'center',
   },
 });

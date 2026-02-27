@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 20,
-    fontWeight: '800',
+    fontFamily: 'JosefinSans-Bold',
     color: '#FFFFFF',
     letterSpacing: 0.3,
   },

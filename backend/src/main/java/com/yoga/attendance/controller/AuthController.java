@@ -167,4 +167,18 @@ public class AuthController {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
+
+    @PostMapping("/create-admin")
+    public ResponseEntity<?> createAdmin(
+            @org.springframework.security.core.annotation.AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails currentUser,
+            @jakarta.validation.Valid @RequestBody RegisterRequest request) {
+        try {
+            if (currentUser == null) {
+                return ResponseEntity.status(401).body(Map.of("error", "Unauthorized"));
+            }
+            return ResponseEntity.ok(authService.createAdmin(currentUser.getUsername(), request));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
 }

@@ -34,7 +34,11 @@
         "INTERNET",
         "ACCESS_NETWORK_STATE",
         "RECEIVE_BOOT_COMPLETED",
-        "VIBRATE"
+        "VIBRATE",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_MEDIA_IMAGES"
       ],
       "enableProguardInReleaseBuilds": true,
       "enableShrinkResourcesInReleaseBuilds": true,
@@ -48,7 +52,14 @@
       }
     },
     "plugins": [
-      "expo-video"
+      "expo-video",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you upload a profile picture or healing photo.",
+          "cameraPermission": "The app accesses your camera to let you take a profile picture or healing photo."
+        }
+      ]
     ]
   }
 }

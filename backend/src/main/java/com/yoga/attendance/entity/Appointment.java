@@ -13,7 +13,7 @@ public class Appointment {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnoreProperties({"password", "email", "role", "level", "appointments"})
+    @JsonIgnoreProperties({ "password", "email", "role", "level", "appointments" })
     private User user;
 
     @Column(nullable = false)

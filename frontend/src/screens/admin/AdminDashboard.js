@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialIcons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { notificationService } from '../../services/notificationService';
-import { authAPI, attendanceAPI, adminAPI, contentAPI } from '../../services/api';
+import { authAPI, attendanceAPI, adminAPI, contentAPI, doctorAPI } from '../../services/api';
 import { API_URL } from '../../../config';
 
 export default function AdminDashboard({ navigation }) {
@@ -41,6 +41,13 @@ export default function AdminDashboard({ navigation }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedDoctorFilter, setSelectedDoctorFilter] = useState('all');
   const [healingUploads, setHealingUploads] = useState([]);
+  const [currentRole, setCurrentRole] = useState('');
+  const [adminModal, setAdminModal] = useState(false);
+  const [newAdminData, setNewAdminData] = useState({ name: '', username: '', email: '', phone: '', password: '' });
+  const [doctorModal, setDoctorModal] = useState(false);
+  const [doctors, setDoctors] = useState([]);
+  const [doctorForm, setDoctorForm] = useState({ id: null, name: '', designation: '' });
+  const [editingDoctor, setEditingDoctor] = useState(null);
 
   useEffect(() => {
     loadData();
@@ -49,13 +56,92 @@ export default function AdminDashboard({ navigation }) {
 
   const loadUnreadCount = async () => {
     const username = await AsyncStorage.getItem('username');
+    const role = await AsyncStorage.getItem('role');
+    setCurrentRole(role);
     const count = await notificationService.getUnreadCount(username);
     setUnreadCount(count);
+  };
+
+  const handleCreateAdmin = async () => {
+    if (!newAdminData.name || !newAdminData.username || !newAdminData.email || !newAdminData.password) {
+      Alert.alert('Error', 'Please fill in all required fields');
+      return;
+    }
+    try {
+      await authAPI.createAdmin(newAdminData);
+      setAdminModal(false);
+      setSuccessAlert(`Admin '${newAdminData.username}' created successfully!`);
+      setNewAdminData({ name: '', username: '', email: '', phone: '', password: '' });
+    } catch (error) {
+      Alert.alert('Error', error.message || 'Failed to create admin');
+    }
+  };
+
+  const loadDoctors = async () => {
+    try {
+      const data = await doctorAPI.getAllDoctors();
+      setDoctors(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.log('Error loading doctors:', error);
+      setDoctors([]);
+    }
+  };
+
+  const handleAddDoctor = async () => {
+    if (!doctorForm.name || !doctorForm.designation) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+    try {
+      if (editingDoctor) {
+        await doctorAPI.updateDoctor(editingDoctor.id, doctorForm.name, doctorForm.designation);
+        setSuccessAlert('Doctor updated successfully!');
+      } else {
+        await doctorAPI.addDoctor(doctorForm.name, doctorForm.designation);
+        setSuccessAlert('Doctor added successfully!');
+      }
+      setDoctorForm({ id: null, name: '', designation: '' });
+      setEditingDoctor(null);
+      setDoctorModal(false);
+      loadDoctors();
+    } catch (error) {
+      Alert.alert('Error', error.message || 'Failed to save doctor');
+    }
+  };
+
+  const handleEditDoctor = (doctor) => {
+    setEditingDoctor(doctor);
+    setDoctorForm({ id: doctor.id, name: doctor.name, designation: doctor.designation });
+    setDoctorModal(true);
+  };
+
+  const handleDeleteDoctor = async (id) => {
+    Alert.alert(
+      'Delete Doctor',
+      'Are you sure you want to delete this doctor?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await doctorAPI.deleteDoctor(id);
+              setSuccessAlert('Doctor deleted successfully!');
+              loadDoctors();
+            } catch (error) {
+              Alert.alert('Error', error.message || 'Failed to delete doctor');
+            }
+          }
+        }
+      ]
+    );
   };
 
   useEffect(() => {
     if (activeTab === 'appointments') {
       loadAppointments();
+      loadDoctors();
     }
     if (activeTab === 'qa') {
       loadQA();
@@ -202,6 +288,17 @@ export default function AdminDashboard({ navigation }) {
     } catch (error) {
       Alert.alert('Error', 'Failed to approve user');
     }
+  };
+
+  const getImageUrl = (path) => {
+    if (!path) return null;
+    if (path.startsWith('http')) return path;
+    const baseUrl = API_URL.replace('/api/v1', '');
+    // Ensure path starts with /uploads/ if it's just a filename
+    if (!path.startsWith('/uploads/') && !path.startsWith('uploads/')) {
+      return `${baseUrl}/uploads/${path.startsWith('/') ? path.substring(1) : path}`;
+    }
+    return `${baseUrl}${path.startsWith('/') ? '' : '/'}${path}`;
   };
 
   const loadData = async () => {
@@ -351,13 +448,12 @@ export default function AdminDashboard({ navigation }) {
               {/* Avatar */}
               <TouchableOpacity style={styles.userAvatarSmall} onPress={() => {
                 if (user?.profilePictureUrl) {
-                  const fullUrl = user.profilePictureUrl.startsWith('http') ? user.profilePictureUrl : `${API_URL.replace('/api/v1', '')}${user.profilePictureUrl}`;
-                  setSelectedImage(fullUrl);
+                  setSelectedImage(getImageUrl(user.profilePictureUrl));
                 }
               }}>
                 {user?.profilePictureUrl ? (
                   <Image
-                    source={{ uri: user.profilePictureUrl.startsWith('http') ? user.profilePictureUrl : `${API_URL.replace('/api/v1', '')}${user.profilePictureUrl}` }}
+                    source={{ uri: getImageUrl(user.profilePictureUrl) }}
                     style={{ width: 40, height: 40, borderRadius: 20 }}
                   />
                 ) : (
@@ -453,13 +549,12 @@ export default function AdminDashboard({ navigation }) {
           <View key={i} style={styles.pendingUserItem}>
             <TouchableOpacity style={styles.userAvatar} onPress={() => {
               if (user.profilePictureUrl) {
-                const fullUrl = user.profilePictureUrl.startsWith('http') ? user.profilePictureUrl : `${API_URL.replace('/api/v1', '')}${user.profilePictureUrl}`;
-                setSelectedImage(fullUrl);
+                setSelectedImage(getImageUrl(user.profilePictureUrl));
               }
             }}>
               {user.profilePictureUrl ? (
                 <Image
-                  source={{ uri: user.profilePictureUrl.startsWith('http') ? user.profilePictureUrl : `${API_URL.replace('/api/v1', '')}${user.profilePictureUrl}` }}
+                  source={{ uri: getImageUrl(user.profilePictureUrl) }}
                   style={{ width: 48, height: 48, borderRadius: 24 }}
                 />
               ) : (
@@ -486,17 +581,23 @@ export default function AdminDashboard({ navigation }) {
   const renderUsers = () => (
     <View style={styles.card}>
       <Text style={styles.cardTitle}>Registered Users ({users.length})</Text>
+
+      {currentRole === 'SUPER_ADMIN' && (
+        <TouchableOpacity style={styles.addBtn} onPress={() => setAdminModal(true)}>
+          <Text style={styles.addBtnText}>+ Create Admin</Text>
+        </TouchableOpacity>
+      )}
+
       {users.map((user, i) => (
         <TouchableOpacity key={i} style={styles.userItem} onPress={() => loadUserDetails(user)}>
           <TouchableOpacity style={styles.userAvatar} onPress={() => {
             if (user.profilePictureUrl) {
-              const fullUrl = user.profilePictureUrl.startsWith('http') ? user.profilePictureUrl : `${API_URL.replace('/api/v1', '')}${user.profilePictureUrl}`;
-              setSelectedImage(fullUrl);
+              setSelectedImage(getImageUrl(user.profilePictureUrl));
             }
           }}>
             {user.profilePictureUrl ? (
               <Image
-                source={{ uri: user.profilePictureUrl.startsWith('http') ? user.profilePictureUrl : `${API_URL.replace('/api/v1', '')}${user.profilePictureUrl}` }}
+                source={{ uri: getImageUrl(user.profilePictureUrl) }}
                 style={{ width: 48, height: 48, borderRadius: 24 }}
               />
             ) : (
@@ -530,6 +631,17 @@ export default function AdminDashboard({ navigation }) {
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Appointment Requests</Text>
 
+        <TouchableOpacity
+          style={styles.manageDoctorsBtn}
+          onPress={() => {
+            setDoctorForm({ id: null, name: '', designation: '' });
+            setEditingDoctor(null);
+            setDoctorModal(true);
+          }}>
+          <MaterialIcons name="medical-services" size={16} color="#FFFFFF" />
+          <Text style={styles.manageDoctorsBtnText}>Manage Doctors</Text>
+        </TouchableOpacity>
+
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 12 }}>
           <View style={styles.doctorFilterRow}>
             <TouchableOpacity
@@ -537,21 +649,19 @@ export default function AdminDashboard({ navigation }) {
               onPress={() => setSelectedDoctorFilter('all')}>
               <Text style={[styles.doctorFilterText, selectedDoctorFilter === 'all' && styles.doctorFilterTextActive]}>All</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.doctorFilterBtn, selectedDoctorFilter === 'Dr. Vivekananthan (Yoga)' && styles.doctorFilterBtnActive]}
-              onPress={() => setSelectedDoctorFilter('Dr. Vivekananthan (Yoga)')}>
-              <Text style={[styles.doctorFilterText, selectedDoctorFilter === 'Dr. Vivekananthan (Yoga)' && styles.doctorFilterTextActive]}>Yoga</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.doctorFilterBtn, selectedDoctorFilter === 'Dr. Vivekananthan (Meditation)' && styles.doctorFilterBtnActive]}
-              onPress={() => setSelectedDoctorFilter('Dr. Vivekananthan (Meditation)')}>
-              <Text style={[styles.doctorFilterText, selectedDoctorFilter === 'Dr. Vivekananthan (Meditation)' && styles.doctorFilterTextActive]}>Meditation</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.doctorFilterBtn, selectedDoctorFilter === 'Dr. Vivekananthan (Wellness)' && styles.doctorFilterBtnActive]}
-              onPress={() => setSelectedDoctorFilter('Dr. Vivekananthan (Wellness)')}>
-              <Text style={[styles.doctorFilterText, selectedDoctorFilter === 'Dr. Vivekananthan (Wellness)' && styles.doctorFilterTextActive]}>Wellness</Text>
-            </TouchableOpacity>
+            {doctors.filter(d => d.active).map((doctor) => {
+              const filterKey = `${doctor.name} (${doctor.designation})`;
+              return (
+                <TouchableOpacity
+                  key={doctor.id}
+                  style={[styles.doctorFilterBtn, selectedDoctorFilter === filterKey && styles.doctorFilterBtnActive]}
+                  onPress={() => setSelectedDoctorFilter(filterKey)}>
+                  <Text style={[styles.doctorFilterText, selectedDoctorFilter === filterKey && styles.doctorFilterTextActive]}>
+                    {doctor.designation}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </ScrollView>
 
@@ -708,12 +818,11 @@ export default function AdminDashboard({ navigation }) {
               key={item.id}
               style={{ width: '48%', backgroundColor: '#fff', borderRadius: 10, marginBottom: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 3 }}
               onPress={() => {
-                const fullUrl = item.photoUrl.startsWith('http') ? item.photoUrl : `${API_URL.replace('/api/v1', '')}${item.photoUrl}`;
-                setSelectedImage(fullUrl);
+                setSelectedImage(getImageUrl(item.photoUrl));
               }}
             >
               <Image
-                source={{ uri: item.photoUrl.startsWith('http') ? item.photoUrl : `${API_URL.replace('/api/v1', '')}${item.photoUrl}` }}
+                source={{ uri: getImageUrl(item.photoUrl) }}
                 style={{ width: '100%', height: 150, borderTopLeftRadius: 10, borderTopRightRadius: 10 }}
                 resizeMode="cover"
               />
@@ -1195,6 +1304,129 @@ export default function AdminDashboard({ navigation }) {
           )}
         </View>
       </Modal>
+
+      {/* Create Admin Modal */}
+      {adminModal && (
+        <Modal visible={true} transparent animationType="slide">
+          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.modalOverlay}>
+            <View style={styles.appointmentModalContent}>
+              <View style={styles.editModalHeader}>
+                <Text style={styles.editModalTitle}>Create New Admin</Text>
+                <TouchableOpacity onPress={() => setAdminModal(false)}>
+                  <MaterialIcons name="close" size={24} color="#111827" />
+                </TouchableOpacity>
+              </View>
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <Text style={styles.appointmentModalLabel}>Full Name</Text>
+                <TextInput style={[styles.appointmentNotesInput, { minHeight: 40 }]} placeholder="Enter full name" placeholderTextColor="#9CA3AF" value={newAdminData.name} onChangeText={(text) => setNewAdminData({ ...newAdminData, name: text })} />
+
+                <Text style={styles.appointmentModalLabel}>Username</Text>
+                <TextInput style={[styles.appointmentNotesInput, { minHeight: 40 }]} placeholder="Enter username" placeholderTextColor="#9CA3AF" value={newAdminData.username} onChangeText={(text) => setNewAdminData({ ...newAdminData, username: text })} autoCapitalize="none" />
+
+                <Text style={styles.appointmentModalLabel}>Email</Text>
+                <TextInput style={[styles.appointmentNotesInput, { minHeight: 40 }]} placeholder="Enter email" placeholderTextColor="#9CA3AF" value={newAdminData.email} onChangeText={(text) => setNewAdminData({ ...newAdminData, email: text })} keyboardType="email-address" autoCapitalize="none" />
+
+                <Text style={styles.appointmentModalLabel}>Phone</Text>
+                <TextInput style={[styles.appointmentNotesInput, { minHeight: 40 }]} placeholder="Enter phone" placeholderTextColor="#9CA3AF" value={newAdminData.phone} onChangeText={(text) => setNewAdminData({ ...newAdminData, phone: text })} keyboardType="phone-pad" />
+
+                <Text style={styles.appointmentModalLabel}>Password</Text>
+                <TextInput style={[styles.appointmentNotesInput, { minHeight: 40 }]} placeholder="Enter password" placeholderTextColor="#9CA3AF" value={newAdminData.password} onChangeText={(text) => setNewAdminData({ ...newAdminData, password: text })} secureTextEntry />
+
+                <TouchableOpacity style={styles.approveBtn} onPress={handleCreateAdmin}>
+                  <Text style={styles.approveBtnText}>Create Admin</Text>
+                </TouchableOpacity>
+              </ScrollView>
+            </View>
+          </KeyboardAvoidingView>
+        </Modal>
+      )}
+
+      {/* Doctor Management Modal */}
+      {doctorModal && (
+        <Modal visible={true} transparent animationType="slide">
+          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.modalOverlay}>
+            <View style={styles.doctorModalContent}>
+              <View style={styles.editModalHeader}>
+                <Text style={styles.editModalTitle}>{editingDoctor ? 'Edit Doctor' : 'Manage Doctors'}</Text>
+                <TouchableOpacity onPress={() => {
+                  setDoctorModal(false);
+                  setEditingDoctor(null);
+                  setDoctorForm({ id: null, name: '', designation: '' });
+                }}>
+                  <MaterialIcons name="close" size={24} color="#111827" />
+                </TouchableOpacity>
+              </View>
+
+              <ScrollView showsVerticalScrollIndicator={false}>
+                {/* Add/Edit Doctor Form */}
+                <View style={styles.doctorFormSection}>
+                  <Text style={styles.appointmentModalLabel}>Doctor Name</Text>
+                  <TextInput
+                    style={[styles.appointmentNotesInput, { minHeight: 40 }]}
+                    placeholder="Enter doctor name"
+                    placeholderTextColor="#9CA3AF"
+                    value={doctorForm.name}
+                    onChangeText={(text) => setDoctorForm({ ...doctorForm, name: text })}
+                  />
+
+                  <Text style={styles.appointmentModalLabel}>Designation/Specialization</Text>
+                  <TextInput
+                    style={[styles.appointmentNotesInput, { minHeight: 40 }]}
+                    placeholder="e.g., Yoga, Meditation, Wellness"
+                    placeholderTextColor="#9CA3AF"
+                    value={doctorForm.designation}
+                    onChangeText={(text) => setDoctorForm({ ...doctorForm, designation: text })}
+                  />
+
+                  <TouchableOpacity style={styles.approveBtn} onPress={handleAddDoctor}>
+                    <Text style={styles.approveBtnText}>{editingDoctor ? 'Update Doctor' : 'Add Doctor'}</Text>
+                  </TouchableOpacity>
+
+                  {editingDoctor && (
+                    <TouchableOpacity
+                      style={[styles.approveBtn, { backgroundColor: '#6B7280', marginTop: 8 }]}
+                      onPress={() => {
+                        setEditingDoctor(null);
+                        setDoctorForm({ id: null, name: '', designation: '' });
+                      }}>
+                      <Text style={styles.approveBtnText}>Cancel Edit</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+
+                {/* Doctors List */}
+                <View style={styles.doctorListSection}>
+                  <Text style={styles.doctorListTitle}>Current Doctors</Text>
+                  {doctors.map((doctor) => (
+                    <View key={doctor.id} style={[styles.doctorListItem, !doctor.active && { opacity: 0.5 }]}>
+                      <View style={{ flex: 1 }}>
+                        <Text style={styles.doctorListName}>{doctor.name}</Text>
+                        <Text style={styles.doctorListDesignation}>{doctor.designation}</Text>
+                        {!doctor.active && <Text style={styles.doctorInactiveLabel}>Inactive</Text>}
+                      </View>
+                      <View style={{ flexDirection: 'row', gap: 8 }}>
+                        <TouchableOpacity
+                          style={styles.doctorEditBtn}
+                          onPress={() => handleEditDoctor(doctor)}>
+                          <MaterialIcons name="edit" size={18} color="#ffb495" />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={styles.doctorDeleteBtn}
+                          onPress={() => handleDeleteDoctor(doctor.id)}>
+                          <MaterialIcons name="delete" size={18} color="#EF4444" />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  ))}
+                  {doctors.length === 0 && (
+                    <Text style={styles.noData}>No doctors added yet</Text>
+                  )}
+                </View>
+              </ScrollView>
+            </View>
+          </KeyboardAvoidingView>
+        </Modal>
+      )}
     </View>
   );
 }
@@ -1233,8 +1465,8 @@ const styles = StyleSheet.create({
   progressItem: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#F3F4F6' },
   progressUser: { fontSize: 15, fontFamily: 'WorkSans-Bold', color: '#1B3B6F', marginBottom: 4 },
   progressBadges: { flexDirection: 'row', gap: 5 },
-  viewBtn: { padding: 6, backgroundColor: '#DBEAFE', borderRadius: 5 },
-  removeBtn: { padding: 6, backgroundColor: '#FEE2E2', borderRadius: 5 },
+  viewBtn: { padding: 6, backgroundColor: '#FFFFFF', borderRadius: 8, borderWidth: 1, borderColor: '#E5E7EB', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 2, elevation: 1 },
+  removeBtn: { padding: 6, backgroundColor: '#FFFFFF', borderRadius: 8, borderWidth: 1, borderColor: '#FEE2E2', shadowColor: '#EF4444', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 2, elevation: 1 },
   badgeGreen: { backgroundColor: '#28a745', color: '#fff', fontSize: 11, fontFamily: 'WorkSans-Bold', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6 },
   badgeGray: { backgroundColor: '#E5E7EB', color: '#6B7280', fontSize: 11, fontFamily: 'WorkSans-Bold', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6 },
   addBtn: { backgroundColor: '#ffb495', paddingVertical: 10, paddingHorizontal: 14, borderRadius: 8, marginBottom: 8, shadowColor: '#b37e68', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 3 },
@@ -1363,4 +1595,16 @@ const styles = StyleSheet.create({
   badgeText: { fontSize: 9, fontFamily: 'WorkSans-Medium' },
   badgeTextActive: { color: '#27AE60', fontFamily: 'WorkSans-Bold' },
   badgeTextInactive: { color: '#9CA3AF' },
+  manageDoctorsBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#28a745', paddingVertical: 10, paddingHorizontal: 16, borderRadius: 8, gap: 6, shadowColor: '#28a745', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 3, elevation: 3, marginBottom: 12 },
+  manageDoctorsBtnText: { color: '#FFFFFF', fontSize: 12, fontFamily: 'WorkSans-Bold' },
+  doctorModalContent: { backgroundColor: '#FFFFFF', borderRadius: 16, padding: 20, maxHeight: '85%', width: '90%', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.2, shadowRadius: 8, elevation: 8 },
+  doctorFormSection: { marginBottom: 20, paddingBottom: 20, borderBottomWidth: 1, borderBottomColor: '#E5E7EB' },
+  doctorListSection: { marginTop: 10 },
+  doctorListTitle: { fontSize: 16, fontFamily: 'JosefinSans-Bold', color: '#1B3B6F', marginBottom: 12 },
+  doctorListItem: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F9FAFB', padding: 12, borderRadius: 8, marginBottom: 8, borderWidth: 1, borderColor: '#E5E7EB' },
+  doctorListName: { fontSize: 14, fontFamily: 'WorkSans-Bold', color: '#1B3B6F', marginBottom: 2 },
+  doctorListDesignation: { fontSize: 12, fontFamily: 'WorkSans-Regular', color: '#6B7280' },
+  doctorInactiveLabel: { fontSize: 10, fontFamily: 'WorkSans-Bold', color: '#EF4444', marginTop: 4 },
+  doctorEditBtn: { padding: 6, backgroundColor: '#FFF5F0', borderRadius: 6, borderWidth: 1, borderColor: '#ffb495' },
+  doctorDeleteBtn: { padding: 6, backgroundColor: '#FEE2E2', borderRadius: 6, borderWidth: 1, borderColor: '#EF4444' },
 });

@@ -6,8 +6,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface WorkshopRepository extends JpaRepository<Workshop, Long> {
-    List<Workshop> findByLevelAndTypeAndActiveTrueAndEndTimeAfterOrderByStartTimeAsc(Integer level, String type, LocalDateTime now);
+    List<Workshop> findByLevelAndTypeAndActiveTrueAndEndTimeAfterOrderByStartTimeAsc(Integer level, String type,
+            LocalDateTime now);
+
     List<Workshop> findTop5ByActiveTrueOrderByCreatedAtDesc();
+
+    @org.springframework.transaction.annotation.Transactional
     void deleteByEndTimeBefore(LocalDateTime time);
+
     List<Workshop> findByLevelAndTypeAndActiveTrue(Integer level, String type);
 }

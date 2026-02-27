@@ -31,7 +31,7 @@ export default function LoginScreen({ navigation }) {
     setLoading(true);
     try {
       const data = await authAPI.login(username, password);
-      if (data.role === 'ADMIN') {
+      if (data.role === 'ADMIN' || data.role === 'SUPER_ADMIN') {
         navigation.navigate('AdminDashboard');
       } else {
         navigation.navigate('ChemsingDashboard', { username: data.username, name: data.name });
@@ -42,7 +42,7 @@ export default function LoginScreen({ navigation }) {
       } else if (error.message === 'PENDING_APPROVAL') {
         setPendingModal(true);
       } else {
-        setErrorModal(error.message || 'Login failed. Please check your credentials.');
+        setErrorModal('Invalid Credentials');
       }
     } finally {
       setLoading(false);
@@ -379,27 +379,28 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 22,
-    fontWeight: '800',
+    fontFamily: 'JosefinSans-Bold',
     color: '#1B3B6F',
     marginBottom: 12,
     textAlign: 'center',
   },
   modalDesc: {
     fontSize: 15,
+    fontFamily: 'WorkSans-Regular',
     color: '#6B7280',
     marginBottom: 24,
     textAlign: 'center',
     lineHeight: 22,
   },
   modalBtn: {
-    backgroundColor: '#00A8A8',
+    backgroundColor: '#003057',
     paddingVertical: 14,
     borderRadius: 12,
   },
   modalBtnText: {
     color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: 'JosefinSans-Bold',
     textAlign: 'center',
   },
   pendingModalContent: {
@@ -421,13 +422,14 @@ const styles = StyleSheet.create({
   },
   pendingModalTitle: {
     fontSize: 20,
-    fontWeight: '800',
+    fontFamily: 'JosefinSans-Bold',
     color: '#1B3B6F',
     marginBottom: 16,
     textAlign: 'center',
   },
   pendingModalDesc: {
     fontSize: 15,
+    fontFamily: 'WorkSans-Regular',
     color: '#4B5563',
     marginBottom: 12,
     textAlign: 'center',
@@ -435,6 +437,7 @@ const styles = StyleSheet.create({
   },
   pendingModalNote: {
     fontSize: 13,
+    fontFamily: 'WorkSans-Regular',
     color: '#6B7280',
     marginBottom: 24,
     textAlign: 'center',
@@ -450,7 +453,7 @@ const styles = StyleSheet.create({
   pendingModalBtnText: {
     color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: 'JosefinSans-Bold',
     textAlign: 'center',
   },
 });

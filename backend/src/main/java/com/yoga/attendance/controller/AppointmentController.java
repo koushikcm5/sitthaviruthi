@@ -34,7 +34,8 @@ public class AppointmentController {
             String username = request.get("username");
             String reason = request.get("reason");
             String doctorName = request.get("doctorName");
-            System.out.println("Appointment request from: " + username + ", doctor: " + doctorName + ", reason: " + reason);
+            System.out.println(
+                    "Appointment request from: " + username + ", doctor: " + doctorName + ", reason: " + reason);
 
             var userOpt = userRepository.findByUsername(username);
             if (userOpt.isEmpty()) {
@@ -117,15 +118,14 @@ public class AppointmentController {
         apt.setAdminNotes(request.get("adminNotes"));
 
         appointmentRepository.save(apt);
-        
+
         // Notify user about approval
         notificationService.sendToUser(
-            apt.getUser().getUsername(),
-            "Appointment Approved",
-            "Your appointment has been approved and scheduled for " + apt.getScheduledDate().toLocalDate(),
-            "INFO"
-        );
-        
+                apt.getUser().getUsername(),
+                "Appointment Approved",
+                "Your appointment has been approved and scheduled for " + apt.getScheduledDate().toLocalDate(),
+                "INFO");
+
         return ResponseEntity.ok(Map.of("message", "Appointment approved"));
     }
 
@@ -141,16 +141,15 @@ public class AppointmentController {
         apt.setAdminNotes(request.get("adminNotes"));
 
         appointmentRepository.save(apt);
-        
+
         // Notify user about rejection
         String notes = request.get("adminNotes");
         notificationService.sendToUser(
-            apt.getUser().getUsername(),
-            "Appointment Declined",
-            "Your appointment request has been declined." + (notes != null ? " Reason: " + notes : ""),
-            "WARNING"
-        );
-        
+                apt.getUser().getUsername(),
+                "Appointment Declined",
+                "Your appointment request has been declined." + (notes != null ? " Reason: " + notes : ""),
+                "WARNING");
+
         return ResponseEntity.ok(Map.of("message", "Appointment rejected"));
     }
 

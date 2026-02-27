@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Image, ActivityIndicator, Modal, Keyboard } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { authAPI } from '../../services/api';
 import { validateEmail, validatePhone, validatePassword, validateUsername, validateName } from '../../utils/validation';
@@ -34,37 +35,37 @@ export default function RegisterScreen({ navigation }) {
       setErrorModal('Please fill all fields');
       return;
     }
-    
+
     const nameError = validateName(name);
     if (nameError) {
       setErrorModal(nameError);
       return;
     }
-    
+
     const usernameError = validateUsername(username);
     if (usernameError) {
       setErrorModal(usernameError);
       return;
     }
-    
+
     const emailError = validateEmail(email);
     if (emailError) {
       setErrorModal(emailError);
       return;
     }
-    
+
     const phoneError = validatePhone(phone);
     if (phoneError) {
       setErrorModal(phoneError);
       return;
     }
-    
+
     const passwordError = validatePassword(password);
     if (passwordError) {
       setErrorModal(passwordError);
       return;
     }
-    
+
     if (password !== confirmPassword) {
       setErrorModal('Passwords do not match');
       return;
@@ -84,11 +85,12 @@ export default function RegisterScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <Image source={require('../../../assets/img/Frame-1.png')} style={styles.bottomFrame} resizeMode="cover" pointerEvents="none" />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.keyboardView}>
         <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false} scrollEnabled={isKeyboardVisible}>
           <View style={styles.headerSection}>
-            <View style={styles.mandalaPattern} />
+            <Image source={require('../../../assets/img/Frame-1.png')} style={styles.topFrame} resizeMode="cover" pointerEvents="none" />
             <Image source={require('../../../assets/SVY-Logo-01.png')} style={styles.logo} />
           </View>
 
@@ -205,8 +207,6 @@ export default function RegisterScreen({ navigation }) {
                   <Text style={styles.legalText}>Terms of Service</Text>
                 </TouchableOpacity>
               </View>
-
-              <View style={styles.bottomMandala} />
             </View>
           </View>
         </ScrollView>
@@ -216,7 +216,7 @@ export default function RegisterScreen({ navigation }) {
         <Modal visible={true} transparent animationType="fade">
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
-              <MaterialIcons name="error" size={64} color="#EF4444" style={{alignSelf: 'center', marginBottom: 16}} />
+              <MaterialIcons name="error" size={64} color="#EF4444" style={{ alignSelf: 'center', marginBottom: 16 }} />
               <Text style={styles.modalTitle}>Registration Error</Text>
               <Text style={styles.modalDesc}>{errorModal}</Text>
               <TouchableOpacity style={styles.modalBtn} onPress={() => setErrorModal(null)}>
@@ -231,9 +231,7 @@ export default function RegisterScreen({ navigation }) {
         <Modal visible={true} transparent animationType="fade">
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
-              <View style={styles.successIconCircle}>
-                <MaterialIcons name="check" size={40} color="#FFFFFF" />
-              </View>
+              <MaterialIcons name="check-circle" size={64} color="#10B981" style={{ alignSelf: 'center', marginBottom: 16 }} />
               <Text style={styles.modalTitle}>Registration Successful!</Text>
               <Text style={styles.modalDesc}>Your account has been created successfully. Please wait for admin approval to access the app.</Text>
               <TouchableOpacity style={styles.modalBtn} onPress={() => { setSuccessModal(false); navigation.navigate('Login'); }}>
@@ -243,14 +241,14 @@ export default function RegisterScreen({ navigation }) {
           </View>
         </Modal>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#fff',
   },
   keyboardView: {
     flex: 1,
@@ -266,30 +264,46 @@ const styles = StyleSheet.create({
     position: 'relative',
     overflow: 'hidden',
   },
-  mandalaPattern: {
+  topFrame: {
     position: 'absolute',
-    top: -50,
-    right: -50,
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
-    borderStyle: 'dashed',
+    top: -10,
+    left: 50,
+    right: 0,
+    width: '70%',
+    height: '100%',
+    opacity: 100,
+    zIndex: 1,
+    tintColor: '#ffffffff',
   },
   logo: {
     width: 100,
     height: 100,
     resizeMode: 'contain',
+    zIndex: 2,
   },
   formSection: {
     flex: 1,
+    backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
     marginTop: -20,
     paddingHorizontal: 24,
     paddingTop: 20,
     paddingBottom: 60,
+    position: 'relative',
+    zIndex: 2,
+  },
+  bottomFrame: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: '100%',
+    height: 100,
+    opacity: 0.90,
+    zIndex: 0,
+    transform: [{ rotate: '180deg' }],
+    tintColor: '#2b6230ff',
   },
   welcomeTitle: {
     fontSize: 18,
@@ -419,17 +433,6 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontFamily: 'WorkSans-Regular',
   },
-  bottomMandala: {
-    position: 'absolute',
-    bottom: 20,
-    alignSelf: 'center',
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    borderWidth: 1,
-    borderColor: 'rgba(212,165,116,0.2)',
-    borderStyle: 'dashed',
-  },
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.7)',
@@ -459,7 +462,7 @@ const styles = StyleSheet.create({
     lineHeight: 19,
   },
   modalBtn: {
-    backgroundColor: '#00A8A8',
+    backgroundColor: '#003057',
     paddingVertical: 12,
     borderRadius: 10,
   },
@@ -468,15 +471,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'JosefinSans-Bold',
     textAlign: 'center',
-  },
-  successIconCircle: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: '#10B981',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginBottom: 16,
   },
 });

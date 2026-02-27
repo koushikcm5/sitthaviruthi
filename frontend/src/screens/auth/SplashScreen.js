@@ -22,7 +22,6 @@ export default function SplashScreen({ onFinish }) {
       <VideoView
         player={player}
         style={styles.video}
-        contentFit="cover"
         nativeControls={false}
       />
     </View>

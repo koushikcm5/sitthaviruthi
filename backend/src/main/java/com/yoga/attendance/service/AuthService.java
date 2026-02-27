@@ -387,4 +387,40 @@ public class AuthService {
             throw new RuntimeException("Failed to store file: " + e.getMessage());
         }
     }
+
+    public Map<String, String> createAdmin(String requesterUsername, RegisterRequest request) {
+        User requester = userRepository.findByUsername(requesterUsername)
+                .orElseThrow(() -> new RuntimeException("Requester not found"));
+
+        if (requester.getRole() != User.Role.SUPER_ADMIN) {
+            throw new RuntimeException("Access Denied: Only Super Admin can create admins");
+        }
+
+        String username = inputSanitizer.sanitize(request.getUsername());
+        String email = inputSanitizer.sanitize(request.getEmail());
+        String name = inputSanitizer.sanitize(request.getName());
+        String phone = inputSanitizer.sanitize(request.getPhone());
+
+        if (userRepository.existsByUsername(username)) {
+            throw new RuntimeException("Username already exists");
+        }
+
+        if (userRepository.existsByEmail(email)) {
+            throw new RuntimeException("Email already exists");
+        }
+
+        User user = new User();
+        user.setName(name);
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPhone(phone);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(User.Role.ADMIN);
+        user.setApproved(true);
+        user.setEmailVerified(true);
+
+        userRepository.save(user);
+
+        return Map.of("message", "Admin created successfully");
+    }
 }

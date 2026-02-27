@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialIcons } from '@expo/vector-icons';
 import UniversalVideoPlayer from '../../components/common/UniversalVideoPlayer';
 import { notificationService } from '../../services/notificationService';
-import { authAPI, attendanceAPI, contentAPI, workshopAPI, userAPI, qaAPI, appointmentAPI } from '../../services/api';
+import { authAPI, attendanceAPI, contentAPI, workshopAPI, userAPI, qaAPI, appointmentAPI, doctorAPI } from '../../services/api';
 
 import { getFontFamily } from '../../styles/fonts';
 import * as ImagePicker from 'expo-image-picker';
@@ -65,12 +65,10 @@ export default function ChemsingDashboard({ navigation, route }) {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showAppointments, setShowAppointments] = useState(false);
   const [showQA, setShowQA] = useState(false);
+  const [doctors, setDoctors] = useState([]);
+  const [showHealingImagePicker, setShowHealingImagePicker] = useState(false);
 
-  const DOCTORS = [
-    { id: 1, name: 'Dr. Vivekananthan (Yoga)', specialty: 'Yoga Therapy', icon: 'spa' },
-    { id: 2, name: 'Dr. Vivekananthan (Meditation)', specialty: 'Meditation & Mindfulness', icon: 'self-improvement' },
-    { id: 3, name: 'Dr. Vivekananthan (Wellness)', specialty: 'Holistic Wellness', icon: 'healing' }
-  ];
+
 
   useEffect(() => {
     loadDashboard();
@@ -78,12 +76,38 @@ export default function ChemsingDashboard({ navigation, route }) {
     loadAppointments();
     loadQA();
     loadUnreadCount();
+    loadDoctors();
   }, []);
 
   const loadUnreadCount = async () => {
     const username = await AsyncStorage.getItem('username');
     const count = await notificationService.getUnreadCount(username);
     setUnreadCount(count);
+  };
+
+  const loadDoctors = async () => {
+    try {
+      const doctorsData = await doctorAPI.getActiveDoctors();
+      // Format doctors to match the expected structure with icon mapping
+      const formattedDoctors = doctorsData.map(doctor => {
+        let icon = 'healing'; // default icon
+        const designation = doctor.designation.toLowerCase();
+        if (designation.includes('yoga')) icon = 'spa';
+        else if (designation.includes('meditation')) icon = 'self-improvement';
+        else if (designation.includes('wellness')) icon = 'healing';
+
+        return {
+          id: doctor.id,
+          name: `${doctor.name} (${doctor.designation})`,
+          specialty: doctor.designation,
+          icon: icon
+        };
+      });
+      setDoctors(formattedDoctors);
+    } catch (error) {
+      console.error('Error loading doctors:', error);
+      setDoctors([]);
+    }
   };
 
 
@@ -134,15 +158,44 @@ export default function ChemsingDashboard({ navigation, route }) {
     }
   };
 
-  const pickHealingImage = async () => {
+  const pickHealingImage = () => {
+    setShowHealingImagePicker(true);
+  };
+
+  const handleHealingCamera = async () => {
+    setShowHealingImagePicker(false);
     try {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
       if (status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!');
+        Alert.alert('Permission needed', 'Camera permission is required to take a photo.');
         return;
       }
 
-      // Using string literal to avoid deprecation warning and undefined crash
+      let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: 'Images',
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.8,
+      });
+
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        setHealingForm(prev => ({ ...prev, photo: result.assets[0].uri }));
+      }
+    } catch (error) {
+      console.error('Camera error:', error);
+      Alert.alert('Error', 'Failed to open camera: ' + error.message);
+    }
+  };
+
+  const handleHealingGallery = async () => {
+    setShowHealingImagePicker(false);
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission needed', 'Gallery permission is required to select a photo.');
+        return;
+      }
+
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: 'Images',
         allowsEditing: true,
@@ -155,7 +208,7 @@ export default function ChemsingDashboard({ navigation, route }) {
       }
     } catch (error) {
       console.error('Error in pickHealingImage:', error);
-      alert('Error picking image: ' + error.message);
+      Alert.alert('Error', 'Error picking image: ' + error.message);
     }
   };
 
@@ -457,40 +510,68 @@ export default function ChemsingDashboard({ navigation, route }) {
     navigation.navigate('Login');
   };
   const pickProfileImage = async () => {
-    try {
-      console.log('Requesting permission...');
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      console.log('Permission status:', status);
+    Alert.alert(
+      'Profile Picture',
+      'Choose an option',
+      [
+        {
+          text: 'Camera',
+          onPress: async () => {
+            try {
+              const { status } = await ImagePicker.requestCameraPermissionsAsync();
+              if (status !== 'granted') {
+                Alert.alert('Permission needed', 'Camera permission is required to take a photo.');
+                return;
+              }
 
-      if (status !== 'granted') {
-        Alert.alert('Permission needed', 'Sorry, we need camera roll permissions to make this work!');
-        return;
-      }
+              let result = await ImagePicker.launchCameraAsync({
+                mediaTypes: 'Images',
+                allowsEditing: true,
+                aspect: [1, 1],
+                quality: 0.5,
+              });
 
-      console.log('Launching image picker...');
-      // Using launchImageLibraryAsync based on the detailed object dump provided
-      if (!ImagePicker || !ImagePicker.launchImageLibraryAsync) {
-        console.error('ImagePicker library seems corrupted or method missing:', ImagePicker);
-        Alert.alert('Error', 'ImagePicker library error. Please restart app.');
-        return;
-      }
+              if (!result.canceled && result.assets && result.assets.length > 0) {
+                uploadProfileImage(result.assets[0].uri);
+              }
+            } catch (error) {
+              console.error('Camera error:', error);
+              Alert.alert('Error', 'Failed to open camera: ' + error.message);
+            }
+          }
+        },
+        {
+          text: 'Gallery',
+          onPress: async () => {
+            try {
+              const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+              if (status !== 'granted') {
+                Alert.alert('Permission needed', 'Sorry, we need camera roll permissions to make this work!');
+                return;
+              }
 
-      // Using string literal to avoid deprecation warning and undefined crash
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: 'Images',
-        allowsEditing: true,
-        aspect: [1, 1],
-        quality: 0.5,
-      });
+              let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: 'Images',
+                allowsEditing: true,
+                aspect: [1, 1],
+                quality: 0.5,
+              });
 
-      if (!result.canceled && result.assets && result.assets.length > 0) {
-        const localUri = result.assets[0].uri;
-        uploadProfileImage(localUri);
-      }
-    } catch (error) {
-      console.error('Error in pickProfileImage:', error);
-      Alert.alert('Error', 'Failed to open gallery: ' + error.message);
-    }
+              if (!result.canceled && result.assets && result.assets.length > 0) {
+                uploadProfileImage(result.assets[0].uri);
+              }
+            } catch (error) {
+              console.error('Gallery error:', error);
+              Alert.alert('Error', 'Failed to open gallery: ' + error.message);
+            }
+          }
+        },
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        }
+      ]
+    );
   };
 
   const uploadProfileImage = async (uri) => {
@@ -1494,7 +1575,7 @@ export default function ChemsingDashboard({ navigation, route }) {
                   </TouchableOpacity>
                 </View>
 
-                {DOCTORS.map(doctor => (
+                {doctors.map(doctor => (
                   <TouchableOpacity
                     key={doctor.id}
                     style={[styles.doctorCard, selectedDoctor?.id === doctor.id && styles.doctorCardSelected]}
@@ -1546,6 +1627,45 @@ export default function ChemsingDashboard({ navigation, route }) {
           </Modal>
         )
       }
+
+      {/* Healing Image Picker Modal */}
+      {showHealingImagePicker && (
+        <Modal visible={true} transparent animationType="slide">
+          <View style={styles.modalOverlay}>
+            <View style={styles.imagePickerModal}>
+              <View style={styles.imagePickerHeader}>
+                <MaterialIcons name="photo-camera" size={32} color="#28a745" />
+                <Text style={styles.imagePickerTitle}>Share Your Healing</Text>
+                <Text style={styles.imagePickerSubtitle}>Choose how to add your photo</Text>
+              </View>
+
+              <View style={styles.imagePickerOptions}>
+                <TouchableOpacity style={styles.imagePickerOption} onPress={handleHealingCamera}>
+                  <View style={[styles.imagePickerIconCircle, { backgroundColor: '#E3F2FD' }]}>
+                    <MaterialIcons name="camera-alt" size={32} color="#2196F3" />
+                  </View>
+                  <Text style={styles.imagePickerOptionText}>Camera</Text>
+                  <Text style={styles.imagePickerOptionDesc}>Take a new photo</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.imagePickerOption} onPress={handleHealingGallery}>
+                  <View style={[styles.imagePickerIconCircle, { backgroundColor: '#F3E5F5' }]}>
+                    <MaterialIcons name="photo-library" size={32} color="#9C27B0" />
+                  </View>
+                  <Text style={styles.imagePickerOptionText}>Gallery</Text>
+                  <Text style={styles.imagePickerOptionDesc}>Choose from library</Text>
+                </TouchableOpacity>
+              </View>
+
+              <TouchableOpacity
+                style={styles.imagePickerCancelBtn}
+                onPress={() => setShowHealingImagePicker(false)}>
+                <Text style={styles.imagePickerCancelText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      )}
 
       {/* Custom Error Modal */}
       {
@@ -1723,7 +1843,7 @@ const styles = StyleSheet.create({
   workshopHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
   workshopTime: { fontSize: 11, color: '#00A8A8', fontFamily: headingBold },
   workshopTitle: { fontSize: 14, color: '#1B3B6F', marginBottom: 4, fontFamily: headingBold },
-  appointmentTitle: { fontSize: 14, color: '#1B3B6F', marginBottom: 4, fontFamily: 'WorkSans-Regular' },
+  appointmentTitle: { fontSize: 16, color: '#04223e', marginBottom: 2, fontFamily: headingBold, fontWeight: '600', letterSpacing: 0.2 },
   workshopDesc: { fontSize: 11, color: '#666', marginBottom: 6, fontFamily: bodyRegular },
   joinBtn: { backgroundColor: '#00A8A8', padding: 10, borderRadius: 8 },
   joinBtnText: { color: '#fff', fontSize: 13, textAlign: 'center', fontFamily: headingBold },
@@ -1786,7 +1906,7 @@ const styles = StyleSheet.create({
   },
   profileLevelText: { fontSize: 18, color: '#1B3B6F', fontFamily: bodyRegular, marginTop: 4 },
   profileLevelSubtext: { fontSize: 14, color: '#00A8A8', fontFamily: bodyRegular, marginTop: 2 },
-  profileNote: { fontSize: 11, color: '#9CA3AF', textAlign: 'center', marginTop: 12, marginBottom: 8, fontStyle: 'italic', fontFamily: bodyRegular },
+  profileNote: { fontSize: 12, color: '#6B7280', textAlign: 'center', marginTop: 12, marginBottom: 8, fontFamily: bodyRegular, letterSpacing: 0.3 },
   progressStatsGrid: { flexDirection: 'row', gap: 10, marginBottom: 16 },
   progressStatBox: {
     flex: 1,
@@ -1966,7 +2086,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
-    shadowColor: ' #b37e68',
+    shadowColor: '#b37e68',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -2004,7 +2124,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: '#FFFFFF',
     padding: 14,
-    shadowColor: ' #b37e68',
+    shadowColor: '#b37e68',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -2020,11 +2140,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   doctorSelectName: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#1B3B6F',
+    fontSize: 16,
+    color: '#04223e',
     marginBottom: 2,
-    fontFamily: headingMedium,
+    fontFamily: headingBold,
   },
   doctorSelectSpecialty: {
     fontSize: 13,
@@ -2138,7 +2257,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
-    shadowColor: ' #b37e68',
+    shadowColor: '#b37e68',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -2149,7 +2268,7 @@ const styles = StyleSheet.create({
   },
   doctorCardName: {
     fontSize: 16,
-    color: '#1B3B6F',
+    color: '#04223e',
     marginBottom: 4,
     fontFamily: headingBold,
   },
@@ -2157,6 +2276,80 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#6B7280',
     fontFamily: bodyRegular,
+  },
+  imagePickerModal: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 24,
+    padding: 24,
+    width: '85%',
+    maxWidth: 400,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  imagePickerHeader: {
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  imagePickerTitle: {
+    fontSize: 20,
+    fontFamily: headingBold,
+    color: '#1B3B6F',
+    marginTop: 12,
+    marginBottom: 4,
+  },
+  imagePickerSubtitle: {
+    fontSize: 13,
+    fontFamily: bodyRegular,
+    color: '#6B7280',
+    textAlign: 'center',
+  },
+  imagePickerOptions: {
+    flexDirection: 'row',
+    gap: 16,
+    marginBottom: 20,
+  },
+  imagePickerOption: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: '#F9FAFB',
+    borderRadius: 16,
+    padding: 20,
+    borderWidth: 2,
+    borderColor: '#E5E7EB',
+  },
+  imagePickerIconCircle: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  imagePickerOptionText: {
+    fontSize: 15,
+    fontFamily: headingBold,
+    color: '#1B3B6F',
+    marginBottom: 4,
+  },
+  imagePickerOptionDesc: {
+    fontSize: 11,
+    fontFamily: bodyRegular,
+    color: '#6B7280',
+    textAlign: 'center',
+  },
+  imagePickerCancelBtn: {
+    backgroundColor: '#F3F4F6',
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  imagePickerCancelText: {
+    fontSize: 15,
+    fontFamily: headingBold,
+    color: '#6B7280',
   },
 
 });

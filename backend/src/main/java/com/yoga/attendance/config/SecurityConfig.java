@@ -38,7 +38,9 @@ public class SecurityConfig {
                         // endpoints
                         .requestMatchers("/api/v1/auth/delete-user/**", "/api/v1/auth/pending-users",
                                 "/api/v1/auth/approve-user/**")
-                        .hasRole("ADMIN")
+                        .hasAnyRole("ADMIN", "SUPER_ADMIN") // Allow Super Admin to access these as well
+                        .requestMatchers("/api/v1/auth/create-admin").hasRole("SUPER_ADMIN")
+                        .requestMatchers("/api/v1/app/open").authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -58,12 +60,14 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        String allowedOrigins = System.getenv().getOrDefault("ALLOWED_ORIGINS", "http://localhost:*,http://10.0.2.2:*,http://192.168.*:*,http://10.10.*:*");
+        String allowedOrigins = System.getenv().getOrDefault("ALLOWED_ORIGINS",
+                "http://localhost:*,http://10.0.2.2:*,http://192.168.*:*,http://10.10.*:*");
         configuration.setAllowedOriginPatterns(Arrays.asList(allowedOrigins.split(",")));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept",
                 "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers"));
-        configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
+        configuration
+                .setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

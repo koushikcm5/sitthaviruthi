@@ -7,10 +7,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "users", indexes = {
-    @Index(name = "idx_username", columnList = "username"),
-    @Index(name = "idx_email", columnList = "email"),
-    @Index(name = "idx_role", columnList = "role"),
-    @Index(name = "idx_approved", columnList = "approved")
+        @Index(name = "idx_username", columnList = "username"),
+        @Index(name = "idx_email", columnList = "email"),
+        @Index(name = "idx_role", columnList = "role"),
+        @Index(name = "idx_approved", columnList = "approved")
 })
 @Data
 public class User {
@@ -66,6 +66,6 @@ public class User {
     private List<Attendance> attendances;
 
     public enum Role {
-        USER, ADMIN
+        USER, ADMIN, SUPER_ADMIN
     }
 }

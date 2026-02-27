@@ -27,7 +27,7 @@ export default function AdminNotificationsScreen({ navigation }) {
   const handleNotificationPress = async (notification) => {
     await notificationService.markAsRead(notification.id);
     loadNotifications();
-    
+
     // Navigate based on notification type
     if (notification.type === 'APPOINTMENT') {
       navigation.navigate('AdminAppointments');
@@ -111,8 +111,8 @@ const styles = StyleSheet.create({
     borderBottomColor: '#E5E7EB'
   },
   backBtn: { padding: 8 },
-  headerTitle: { fontSize: 20, fontWeight: '800', color: '#1B3B6F', flex: 1, textAlign: 'center' },
-  markAllText: { fontSize: 14, color: '#ffb495',fontFamily: 'WorkSans-Medium' },
+  headerTitle: { fontSize: 15, color: '#1B3B6F', fontFamily: 'JosefinSans-Bold', flex: 1, textAlign: 'center' },
+  markAllText: { fontSize: 14, color: '#4e1a03ff', fontFamily: 'WorkSans-Medium' },
   notificationCard: {
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
@@ -128,10 +128,10 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2
   },
-  unreadCard: { 
-    backgroundColor: '#F0F9FF', 
-    borderLeftWidth: 4, 
-    borderLeftColor: '#00A8A8' 
+  unreadCard: {
+    backgroundColor: '#F0F9FF',
+    borderLeftWidth: 4,
+    borderLeftColor: '#00A8A8'
   },
   iconCircle: {
     width: 48,
@@ -142,15 +142,15 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   notificationContent: { flex: 1 },
-  notificationTitle: { 
-    fontSize: 16, 
+  notificationTitle: {
+    fontSize: 16,
     fontFamily: 'WorkSans-Medium',
-    color: '#1B3B6F', 
-    marginBottom: 4 
+    color: '#1B3B6F',
+    marginBottom: 4
   },
-  notificationMessage: { 
-    fontSize: 12, 
-    color: '#6B7280', 
+  notificationMessage: {
+    fontSize: 12,
+    color: '#6B7280',
     fontFamily: 'WorkSans-Medium',
     marginBottom: 4,
     lineHeight: 20
@@ -163,14 +163,14 @@ const styles = StyleSheet.create({
     fontFamily: 'WorkSans-Medium',
     backgroundColor: '#ffb495'
   },
-  emptyState: { 
-    alignItems: 'center', 
+  emptyState: {
+    alignItems: 'center',
     marginTop: 100,
     padding: 20
   },
-  emptyText: { 
-    fontSize: 16, 
-    color: '#9CA3AF', 
-    marginTop: 16 
+  emptyText: {
+    fontSize: 16,
+    color: '#9CA3AF',
+    marginTop: 16
   }
 });

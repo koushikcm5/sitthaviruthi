@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Modal, StatusBar } from 'react-native';
 import { VideoView, useVideoPlayer } from 'expo-video';
 import { WebView } from 'react-native-webview';
 import * as ScreenOrientation from 'expo-screen-orientation';
@@ -32,9 +32,11 @@ export default function UniversalVideoPlayer({ videoUrl, onClose }) {
       setIsYouTube(true);
       setYoutubeId(ytId);
     }
-    
+
     ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+    StatusBar.setHidden(true);
     return () => {
+      StatusBar.setHidden(false);
       ScreenOrientation.unlockAsync();
       if (player) {
         try {
@@ -57,7 +59,7 @@ export default function UniversalVideoPlayer({ videoUrl, onClose }) {
             mediaPlaybackRequiresUserAction={false}
           />
         ) : (
-          !isYouTube && <VideoView player={player} style={styles.video} nativeControls />
+          !isYouTube && <VideoView player={player} style={styles.video} contentFit="cover" nativeControls />
         )}
         <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
           <MaterialIcons name="close" size={30} color="#FFF" />

@@ -39,37 +39,35 @@ public class AttendanceReminderService {
                 System.out.println("User not found: " + username);
                 return;
             }
-            
-            // Skip reminder for admins only
-            if ("ADMIN".equalsIgnoreCase(user.getRole().name())) {
-                System.out.println("User is admin, skipping reminder: " + username);
+
+            // Skip reminder for admins and super admins
+            String roleStr = user.getRole().name();
+            if ("ADMIN".equalsIgnoreCase(roleStr) || "SUPER_ADMIN".equalsIgnoreCase(roleStr)) {
+                System.out.println("User is admin/super_admin, skipping reminder: " + username);
                 return;
             }
-            
+
             LocalDate today = LocalDate.now();
-            
+
             // Check if reminder already sent today (only send once per day)
             List<Notification> todayNotifications = notificationRepository
-                .findByUsernameOrderByCreatedAtDesc(username);
-            
+                    .findByUsernameOrderByCreatedAtDesc(username);
+
             boolean reminderSentToday = todayNotifications.stream()
-                .anyMatch(n -> 
-                    "REMINDER".equals(n.getType()) &&
-                    n.getTitle().contains("Mark Your Attendance") &&
-                    n.getCreatedAt().toLocalDate().equals(today)
-                );
-            
+                    .anyMatch(n -> "REMINDER".equals(n.getType()) &&
+                            n.getTitle().contains("Mark Your Attendance") &&
+                            n.getCreatedAt().toLocalDate().equals(today));
+
             if (reminderSentToday) {
                 return; // Already sent today, don't send again
             }
-            
+
             // Send reminder first time app opens today (regardless of attendance status)
             notificationService.sendToUser(
-                username,
-                "Mark Your Attendance",
-                "Welcome back! Don't forget to mark your attendance for today's practice.",
-                "REMINDER"
-            );
+                    username,
+                    "Mark Your Attendance",
+                    "Welcome back! Don't forget to mark your attendance for today's practice.",
+                    "REMINDER");
             System.out.println("Attendance reminder sent to user: " + username);
         } catch (Exception e) {
             System.err.println("Error checking attendance reminder: " + e.getMessage());
